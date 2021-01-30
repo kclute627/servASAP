@@ -1,0 +1,41 @@
+.nav {
+  
+
+  &__drawer {
+    width: 15rem;
+    grid-row: 1/-1;
+    grid-column: 1/1;
+    background-color: #123C69;
+    border: 1px solid rgba(116, 116, 116, 0.39);
+    transition: all 2.3s;
+    display: flex;
+    justify-content: flex-end;
+    align-items: start;
+
+
+  
+  }
+}
+
+.open {
+ 
+  width: 8.5rem;
+  grid-column: 1/-1;
+
+
+  transition: all 1.3s;
+}
+.dashboard{
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: minmax(100vh, 60rem);
+}
+.icon{
+  color: white;
+  margin-top: 3rem;
+  margin-right: 1rem;
+}
+*{
+  margin: 0;
+  padding: 0;
+}
