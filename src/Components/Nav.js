@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useReducer } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
@@ -18,26 +18,16 @@ import ListItemText from "@material-ui/core/ListItemText";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-
-
-
 import DashboardIcon from "@material-ui/icons/Dashboard";
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      // Purple and green play nicely together.
-      main: purple[500],
-    },
-    secondary: {
-      // This is green.A700 as hex.
-      main: "#11cb5f",
-    },
-  },
-});
+const initialState = {
+  currentPage: "dashboard",
+};
 
-const Nav = (props) => {
+
+const Nav = ({dispatch}) => {
   const [open, openHandler] = useState(true);
+ 
 
   return (
     <div className={!open ? "nav__drawer open" : "nav__drawer"}>
@@ -55,7 +45,8 @@ const Nav = (props) => {
             button
             key="1"
             className="listItem"
-            style={{ color: "white", fontSize: "2rem", marginBottom: '1rem' }}
+            style={{ color: "white", fontSize: "2rem", marginBottom: "1rem" }}
+            onClick={()=>dispatch({type: 'dashboard'})}
           >
             <ListItemIcon style={{ color: "white" }}>
               <DashboardIcon fontSize="large" />
@@ -67,27 +58,50 @@ const Nav = (props) => {
               />
             )}
           </ListItem>
-          <ListItem button key="1" style={{ color: "white", marginBottom: '1rem'  }}>
+          <ListItem
+            button
+            key="10"
+            style={{ color: "white", marginBottom: "1rem" }}
+            onClick={()=>dispatch({type: 'jobs'})}
+          >
             <ListItemIcon>
-              <AssignmentIndIcon style={{ color: "white" }} fontSize="large"/>
+              <AssignmentIndIcon style={{ color: "white" }} fontSize="large" />
             </ListItemIcon>
             {open && <ListItemText primary="Jobs" />}
           </ListItem>
-          <ListItem button key="1" style={{ color: "white", fontSize: "2rem", marginBottom: '1rem'  }}>
+          <ListItem
+            button
+            key="21"
+            style={{ color: "white", fontSize: "2rem", marginBottom: "1rem" }}
+            onClick={()=>dispatch({type: 'invoices'})}
+          >
             <ListItemIcon>
               <AttachMoneyIcon style={{ color: "white" }} fontSize="large" />
             </ListItemIcon>
             {open && <ListItemText primary="Invoices" />}
           </ListItem>
-          <ListItem button key="1" style={{ color: "white" , marginBottom: '1rem' }}>
+          <ListItem
+            button
+            key="31"
+            style={{ color: "white", marginBottom: "1rem" }}
+            onClick={()=>dispatch({type: 'reports'})}
+          >
             <ListItemIcon>
               <AssignmentIndIcon style={{ color: "white" }} fontSize="large" />
             </ListItemIcon>
             {open && <ListItemText primary="Reports" id="text" />}
           </ListItem>
-          <ListItem button key="1" style={{ color: "white", marginBottom: '1rem'  }}>
+          <ListItem
+            button
+            key="41"
+            style={{ color: "white", marginBottom: "1rem" }}
+            onClick={()=>dispatch({type: 'account'})}
+          >
             <ListItemIcon style={{ color: "white", padding: 0 }}>
-              <AccountCircleIcon style={{ color: "white", padding: 0 }} fontSize="large" />
+              <AccountCircleIcon
+                style={{ color: "white", padding: 0 }}
+                fontSize="large"
+              />
             </ListItemIcon>
             {open && <ListItemText primary="Account" />}
           </ListItem>

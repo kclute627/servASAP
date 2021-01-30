@@ -1,5 +1,5 @@
 .dashboard {
     display: grid;
-    grid-template-columns: max-content 1fr;
-    grid-template-rows: minmax(100vh, 50rem);
+    grid-template-columns: max-content 1fr 1fr;
+    grid-template-rows: 10rem minmax(100vh, 50rem);
   }
