@@ -1,33 +1,17 @@
 import React, { useState, useReducer } from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Divider from "@material-ui/core/Divider";
-import Drawer from "@material-ui/core/Drawer";
+import SVG from 'react-inlinesvg';
+import { Link } from "react-router-dom";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import MenuIcon from "@material-ui/icons/Menu";
 import IconButton from "@material-ui/core/IconButton";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
 import { grey, purple } from "@material-ui/core/colors";
 import Avatar from "@material-ui/core/Avatar";
 import logo from "../Assets/logo.png";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import DashboardIcon from "@material-ui/icons/Dashboard";
 
-const initialState = {
-  currentPage: "dashboard",
-};
+import { navList } from "../Utils/utils";
 
-
-const Nav = ({dispatch}) => {
+const Nav = ({ dispatch }) => {
   const [open, openHandler] = useState(true);
- 
 
   return (
     <div className={!open ? "nav__drawer open" : "nav__drawer"}>
@@ -40,72 +24,18 @@ const Nav = ({dispatch}) => {
         <span></span>
       </div>
       <div className={open ? "nav__drawer-middle" : "nav__drawer-middle mg"}>
-        <List>
-          <ListItem
-            button
-            key="1"
-            className="listItem"
-            style={{ color: "white", fontSize: "2rem", marginBottom: "1rem" }}
-            onClick={()=>dispatch({type: 'dashboard'})}
-          >
-            <ListItemIcon style={{ color: "white" }}>
-              <DashboardIcon fontSize="large" />
-            </ListItemIcon>
-            {open && (
-              <ListItemText
-                primary="Dashboard"
-                style={{ transition: "all 11.5s" }}
-              />
-            )}
-          </ListItem>
-          <ListItem
-            button
-            key="10"
-            style={{ color: "white", marginBottom: "1rem" }}
-            onClick={()=>dispatch({type: 'jobs'})}
-          >
-            <ListItemIcon>
-              <AssignmentIndIcon style={{ color: "white" }} fontSize="large" />
-            </ListItemIcon>
-            {open && <ListItemText primary="Jobs" />}
-          </ListItem>
-          <ListItem
-            button
-            key="21"
-            style={{ color: "white", fontSize: "2rem", marginBottom: "1rem" }}
-            onClick={()=>dispatch({type: 'invoices'})}
-          >
-            <ListItemIcon>
-              <AttachMoneyIcon style={{ color: "white" }} fontSize="large" />
-            </ListItemIcon>
-            {open && <ListItemText primary="Invoices" />}
-          </ListItem>
-          <ListItem
-            button
-            key="31"
-            style={{ color: "white", marginBottom: "1rem" }}
-            onClick={()=>dispatch({type: 'reports'})}
-          >
-            <ListItemIcon>
-              <AssignmentIndIcon style={{ color: "white" }} fontSize="large" />
-            </ListItemIcon>
-            {open && <ListItemText primary="Reports" id="text" />}
-          </ListItem>
-          <ListItem
-            button
-            key="41"
-            style={{ color: "white", marginBottom: "1rem" }}
-            onClick={()=>dispatch({type: 'account'})}
-          >
-            <ListItemIcon style={{ color: "white", padding: 0 }}>
-              <AccountCircleIcon
-                style={{ color: "white", padding: 0 }}
-                fontSize="large"
-              />
-            </ListItemIcon>
-            {open && <ListItemText primary="Account" />}
-          </ListItem>
-        </List>
+        {navList.map((link) => (
+          <Link to={link.link}>
+            <li
+              className="nav__drawer-items"
+              onClick={() => dispatch({ type: `${link.type}` })}
+            >
+              <SVG className="nav__drawer-items-icon" src={link.icon} title=' ' />
+              {open ? (<div className="nav__drawer-items-text">{link.text}</div>): null}
+              
+            </li>{" "}
+          </Link>
+        ))}
       </div>
       <div className="nav__drawer-bottom">
         <div className="icon">

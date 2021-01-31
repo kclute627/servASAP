@@ -3,12 +3,51 @@
   &__drawer {
     width: 15rem;
     grid-row: 1/-1;
-    grid-column: 1/1;
-    background-color: #123c69;
+    grid-column: 1/2;
+    background-color: $color-primary;
     border: 1px solid rgba(116, 116, 116, 0.39);
     transition: all 0.5s;
     display: flex;
     flex-direction: column;
+    // make the position static
+    position: sticky;
+
+    &-items {
+      padding: 1.2rem 0;
+      display: flex;
+
+      color: $color-white;
+      align-items: center;
+      justify-content: space-evenly;
+      margin-left: 1rem;
+      overflow-x: hidden;
+
+      &:hover {
+        background-color: rgba(95, 95, 95, 0.3);
+        border-top-left-radius: 75px;
+        border-bottom-left-radius: 75px;
+        overflow-x: hidden;
+        margin-right: .16rem;
+      }
+      &:hover:active {
+        background-color: darken(rgba(95, 95, 95, 0.3), 40%);
+      }
+
+      &-icon {
+        align-self: center;
+        fill: $color-white;
+        height: 2rem;
+        width: 2rem;
+      }
+      &-text {
+        font-weight: 400;
+        font-size: 1.5rem;
+        width: 3rem;
+        margin-right: 3rem;
+        text-align: left;
+        transition: all 0.5s;
+      }
+    }
 
     &-top {
       display: flex;
@@ -18,29 +57,35 @@
       flex-direction: column;
 
       & span {
-        background-color: #9fa0a3;
+        background-color: #595a5eb4;
         height: 2px;
-        width: 55%;
+        width: 100%;
         align-self: center;
         justify-self: center;
-        margin-top: .5rem;
+        margin-top: 0.5rem;
         margin-bottom: 1rem;
       }
     }
     &-middle {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
       width: 100%;
       transition: all 0.5s;
+      & a {
+        width: 100%;
+      }
     }
   }
 }
 
 .open {
   width: 8.5rem;
-  grid-column: 1/-1;
-
+  grid-column: 1/2;
+  grid-row: 1/-1;
   transition: all 0.5s;
+ 
 }
 
 .icon {
@@ -65,14 +110,14 @@
   }
 }
 
-.listItem{
+.listItem {
   width: 100% !important;
   transition: all 0.5s;
 }
-.mg{
-  margin-left: .27rem;
+.mg {
+  margin-left: 0.27rem;
   transition: all 0.5s;
 }
-.MuiTypography-body1{
+.MuiTypography-body1 {
   font-size: 1.4rem !important;
 }
