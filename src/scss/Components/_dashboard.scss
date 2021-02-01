@@ -2,4 +2,5 @@
     display: grid;
     grid-template-columns: max-content 1fr 1fr;
     grid-template-rows: 10rem minmax(100vh, 40rem);
+    position: relative;
   }
