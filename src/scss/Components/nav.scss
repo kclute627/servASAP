@@ -3,7 +3,8 @@
   &__drawer {
     width: 15rem;
 
-    height: 100vh;
+  min-height: 99.8vh;
+  max-height: 40rem;
     grid-row: 1/-1;
     grid-column: 1/2;
     background-color: $color-primary;

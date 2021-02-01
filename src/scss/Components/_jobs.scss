@@ -13,7 +13,7 @@
   grid-column: 2/-1;
   display: grid;
   grid-template-rows: 7rem auto;
-  grid-template-columns: 15rem 25rem 1fr 1fr;
+  grid-template-columns: 15rem 35rem 1fr 1fr;
 
   &-top {
     grid-column: 1/-1;
@@ -44,6 +44,10 @@
         align-self: start;
         justify-self: start;
         margin-left: 1rem;
+        width: 97%;
+        &-1{
+            width: 100%;
+        }
         
       
         & h3{

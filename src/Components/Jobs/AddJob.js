@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddJobForm from "./AddJobForm";
 
 const AddJob = () => {
+  
+  useEffect(()=> {
+    
+    window.scrollTo(0, 0)
+  }, [])
   return (
     <div className="addjob">
       <div className="addjob-top">
