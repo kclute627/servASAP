@@ -8,7 +8,7 @@ import Reports from './Components/Reports';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import {reducer, initialState} from './Reducer/navReducer'
 
-
+ 
 const App = () => {
   const [dashPage, dispatch] = useReducer(reducer, initialState);
   console.log(dashPage.currentPage);

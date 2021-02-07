@@ -3,9 +3,8 @@
   &__drawer {
     width: 15rem;
 
- max-height: 99.8vh;
-  min-height: 40rem;
-
+ height: 101vh;
+  
     grid-row: 1/-1;
     grid-column: 1/2;
     background-color: $color-primary;
@@ -17,6 +16,7 @@
 
     position: -webkit-sticky; /* Safari */
     position: sticky;
+    
     top: 0;
 
     &-items {
@@ -89,6 +89,7 @@
 
 .open {
   width: 8.5rem;
+  height: max($numbers: 100);
   grid-column: 1/2;
   grid-row: 1/-1;
   transition: all 0.5s;

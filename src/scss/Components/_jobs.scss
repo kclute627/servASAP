@@ -67,6 +67,12 @@
             height: 4px;
             margin-left: 2rem;
         }
+
+       
+
+
+
+
     }
 
 
@@ -78,11 +84,52 @@
         justify-self: center;
         margin: .5rem;
         padding: .5rem;
+        position: relative;
 
         & div{
             font-size: 1.2rem;
             font-weight: 400;
         }
 
+    }
+}
+.invoice{
+    grid-row: 2/3;
+    grid-column: 3/5;
+    justify-self: center; 
+    height: max-content;
+    width: 85%;
+    margin-top: 3rem;
+    border-radius: 2rem;
+    border: 2px solid $color-primary;
+    background: $color-gray;
+    padding: 0 2rem;
+    padding-top: .71rem;
+    padding-bottom: 2rem;
+    margin-bottom: 3rem;
+
+    &-span{
+           
+        background: $color-primary;
+        width: 4rem;
+        height: 4px;
+        margin-left: 2rem; 
+        margin-bottom: 1rem;
+    }
+
+    &-top{
+        margin-left: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+
+
+        & h3{
+            margin-left: 2rem;
+        }
+    }
+    &-item{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
     }
 }
