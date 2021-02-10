@@ -7,6 +7,7 @@ const Dashboard = () => {
       }, [])
     return (
         <div>
+            {/* make buttons for ADD JOB NEW CLIENT   */}
             Dashboard
         </div>
     )

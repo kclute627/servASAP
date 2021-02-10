@@ -3,8 +3,8 @@
   &__drawer {
     width: 15rem;
 
- height: 101vh;
-  
+    height: 101vh;
+
     grid-row: 1/-1;
     grid-column: 1/2;
     background-color: $color-primary;
@@ -16,7 +16,7 @@
 
     position: -webkit-sticky; /* Safari */
     position: sticky;
-    
+
     top: 0;
 
     &-items {

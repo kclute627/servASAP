@@ -3,9 +3,6 @@
   grid-column: 2/-1;
   font-size: 3rem;
   color: black;
-
-  &__button {
-  }
 }
 
 .addjob {
@@ -14,6 +11,7 @@
   display: grid;
   grid-template-rows: 7rem auto;
   grid-template-columns: 15rem 35rem 1fr 1fr;
+  position: relative;
 
   &-top {
     grid-column: 1/-1;
@@ -24,112 +22,174 @@
 
     background-color: rgba(241, 240, 240, 0.953);
 
-    & h1{
-        font-size: 2rem;
-        color: rgb(68, 68, 68);
-        justify-self: center;
-        align-self: flex-end;
-        margin-left: 2rem;
-        padding-bottom: 2rem;
-      
+    & h1 {
+      font-size: 2rem;
+      color: rgb(68, 68, 68);
+      justify-self: center;
+      align-self: flex-end;
+      margin-left: 2rem;
+      padding-bottom: 2rem;
     }
   }
 }
 
-.form{
+.form {
+  &-group {
+    grid-row: 2/3;
+    grid-column: 1/3;
+    align-self: start;
+    justify-self: start;
+    margin-left: 1rem;
+    width: 97%;
+    position: relative;
+    padding-bottom: 16rem;
 
-    &-group{
-        grid-row: 2/3;
-        grid-column: 1/3;
-        align-self: start;
-        justify-self: start;
-        margin-left: 1rem;
-        width: 97%;
-        position: relative;
-       
-        &-1{
-            width: 100%;
-        }
+    &-1 {
+      width: 100%;
+    }
+
+    & h3 {
+      margin-top: 1rem;
+      margin-left: 2rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      padding-bottom: 4px;
+    }
+    &-span {
+      background: $color-primary;
+      width: 4rem;
+      height: 4px;
+      margin-left: 2rem;
+    }
+  }
+  &-textarea {
+    height: 8rem;
+    width: 100%;
+    justify-self: start;
+    padding: .75rem;
+    font: inherit;
+    font-size: 1.1rem;
+    color: black;
+    border-radius: .52rem;
+    resize: none;
+
+    &:active{
         
-      
-        & h3{
-            margin-top: 1rem;
-            margin-left: 2rem;
-            font-size: 1.5rem;
-            font-weight: 700;
-            padding-bottom: 4px;
-          
-        }
-        &-span{
-           
-            background: $color-primary;
-            width: 4rem;
-            height: 4px;
-            margin-left: 2rem;
-        }
-
-       
-
-
-
-
+    }
+    &:focus{
+        outline: none !important;
+        border: 2px solid $color-primary
     }
 
 
+  }
+  &-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    justify-self: start;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    position: relative;
 
-    &-item {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        justify-self: center;
-        margin: .5rem;
-        padding: .5rem;
-        position: relative;
-
-        & div{
-            font-size: 1.2rem;
-            font-weight: 400;
-        }
-
+    & div {
+      font-size: 1.2rem;
+      font-weight: 400;
     }
+  }
 }
-.invoice{
+.invoice {
+  margin-top: 3rem;
+  border-radius: 2rem;
+  border: 2px solid $color-primary;
+  background: $color-gray;
+  padding: 0 2rem;
+  padding-top: 0.71rem;
+  padding-bottom: 2rem;
+  margin-bottom: 3rem;
+  -webkit-box-shadow: -5px 2px 22px -2px rgba(0, 0, 0, 0.76);
+  -moz-box-shadow: -5px 2px 22px -2px rgba(0, 0, 0, 0.76);
+  box-shadow: -5px 2px 22px -2px rgba(0, 0, 0, 0.76);
+
+  &__container {
     grid-row: 2/3;
     grid-column: 3/5;
-    justify-self: center; 
+    justify-self: center;
+
     height: max-content;
     width: 85%;
-    margin-top: 3rem;
-    border-radius: 2rem;
-    border: 2px solid $color-primary;
-    background: $color-gray;
-    padding: 0 2rem;
-    padding-top: .71rem;
-    padding-bottom: 2rem;
-    margin-bottom: 3rem;
+    position: sticky;
+    top: 0;
+  }
 
-    &-span{
-           
-        background: $color-primary;
-        width: 4rem;
-        height: 4px;
-        margin-left: 2rem; 
-        margin-bottom: 1rem;
+  &-span {
+    background: $color-primary;
+    width: 4rem;
+    height: 4px;
+
+    margin-bottom: 1.2rem;
+  }
+
+  &-top {
+    margin-left: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+
+    & h3 {
     }
+  }
+  &-item {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
 
-    &-top{
-        margin-left: 1rem;
-        margin-top: 1rem;
-        margin-bottom: 2rem;
+#jobs {
+  &-btn {
+    background-color: $color-green;
+  }
+}
+.job {
+  &__btn {
+    width: 19rem;
+    height: 7rem;
+    background-color: rgb(194, 194, 194);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 333rem;
+    border: 2px solid $color-primary;
+    // margin: 0 auto;
+
+    & div {
+      margin: 0 0.51rem;
+    }
+  }
+}
 
 
-        & h3{
-            margin-left: 2rem;
+.autocomplete{
+
+
+    &-dropdown{
+
+        
+        & span{
+            height: 3rem;
+            font-size: 2rem;
+            background-color: rgb(202, 202, 202);
+        }
+
+
+
+        &-container{
+            background-color: rgb(214, 214, 214);
         }
     }
-    &-item{
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-    }
 }
+
+
+
+

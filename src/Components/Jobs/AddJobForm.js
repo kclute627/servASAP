@@ -7,7 +7,17 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import InvoiceSection from './InvoiceSection';
+import InvoiceSection from "./InvoiceSection";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
+import useOnclickOutside from "react-cool-onclickoutside";
+import PlacesAutocomplete from "./PlacesAutocomplete";
 
 const servers = [
   {
@@ -35,6 +45,17 @@ const AddJobForm = (props) => {
   const [courts, setCourt] = useState("Blank");
   const [courtBtn, setCourtBtn] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [dueDate, setDueDate] = useState(new Date());
+  const [rush, setRush] = useState(false);
+  const [address, setAddress] = useState({
+    city: "",
+    query: "",
+    zip: "",
+    state: "",
+    suite: "",
+    lat: "",
+    long: "",
+  });
 
   useEffect(() => {}, []);
 
@@ -42,10 +63,6 @@ const AddJobForm = (props) => {
     if (event.target.name === "Servers") return setServers(event.target.value);
 
     if (event.target.name === "court") return setCourt(event.target.value);
-  };
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
   };
 
   return (
@@ -62,7 +79,7 @@ const AddJobForm = (props) => {
               style={{ width: "100%" }}
             />
           </div>
-          <div className='form-item'>
+          {/* <div className='form-item'>
             <TextField
               id='outlined-basic'
               label='First Name'
@@ -90,7 +107,7 @@ const AddJobForm = (props) => {
               variant='outlined'
               style={{ width: "55%" }}
             />
-          </div>
+          </div> */}
 
           <div className='form-item'>
             <TextField
@@ -149,6 +166,7 @@ const AddJobForm = (props) => {
               <TextField
                 id='outlined-basic'
                 label='Defendant'
+                autoComplete="new-password"
                 variant='outlined'
                 style={{ width: "100%" }}
               />
@@ -160,9 +178,10 @@ const AddJobForm = (props) => {
                   autoOk
                   variant='inline'
                   label='Court Date'
+                  autoComplete="new-password"
                   value={selectedDate}
                   onChange={(newValue) => {
-                    handleDateChange(newValue);
+                    setSelectedDate(newValue);
                   }}
                 />
               </MuiPickersUtilsProvider>
@@ -175,6 +194,7 @@ const AddJobForm = (props) => {
                 id='outlined-basic'
                 label='Court Name'
                 variant='outlined'
+                autoComplete="new-password"
                 name='court'
                 value={courts}
                 select
@@ -194,17 +214,61 @@ const AddJobForm = (props) => {
           </div>
           <h3>Server Instructions </h3>
           <div className='form-group-span'></div>
+
           <div className='form-item'>
-            <TextField
-              id='outlined-basic'
-              label='Company Name'
-              variant='outlined'
-              style={{ width: "100%" }}
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={rush}
+                  onChange={() => setRush(!rush)}
+                  name='rush'
+                  color='primary'
+                />
+              }
+              label='RUSH'
             />
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                format='MM/dd/yyyy'
+                autoOk
+                variant='inline'
+                label='Due Date'
+                value={dueDate}
+                style={{ width: "35%" }}
+                onChange={(newValue) => {
+                  setDueDate(newValue);
+                }}
+              />
+            </MuiPickersUtilsProvider>
+          </div>
+          <div className='form-item'>
+            <textarea
+              name=''
+              id=''
+              placeholder='Process Server Instructions'
+              className='form-textarea'
+            ></textarea>
           </div>
         </div>
+        <h3> Person / Company Being Served </h3>
+        <div className='form-group-span'></div>
+        <div className='form-item'>
+          <TextField
+            id='outlined-basic'
+            label='Name'
+            variant='outlined'
+            autoComplete="new-password"
+            style={{ width: "100%" }}
+          />
+        </div>
+        <h3> Service Address </h3>
+        <div className='form-group-span'></div>
+        <div className='form-item'>
+          <PlacesAutocomplete />
+        </div>
+        
       </form>
-      <InvoiceSection/>
+      <InvoiceSection />
     </>
   );
 };

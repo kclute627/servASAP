@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import JobsBtn from './JobBtn';
 import TextField from "@material-ui/core/TextField";
 import NumberFormat from "react-number-format";
 import Select from "@material-ui/core/Select";
@@ -17,6 +18,12 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+
+
+
+
+
+
 
 const services = [
   "Service of Process",
@@ -67,7 +74,7 @@ const InvoiceSection = (props) => {
   const [service, setService] = useState("Service of Process");
   const [value, setValue] = useState('');
   const [jobDescription, setJobDescription] = useState("");
-  const [totalPrice, setTotalPrice] = useState('')
+  
   const [qty, setQty] = useState(1);
   const [rows, setRows] = useState([]);
 
@@ -75,7 +82,37 @@ const InvoiceSection = (props) => {
     setService(event.target.value);
   };
 
+
+  useEffect(() => {
+    const listener = event => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+      
+        console.log("Enter key was pressed. Run your function.", service, jobDescription, value, qty);
+        // callMyFunction();
+
+        if(value && jobDescription){
+          handleInvoice(service, jobDescription, value, qty)
+        }
+        
+      
+       
+        
+      }
+    };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, [service, jobDescription, value, qty]);
+
+
+
+
+
+
+
   const handleInvoice = (service, description, price, qty) => {
+    
     let total = (price * qty)
 
     total = formatter.format(total)
@@ -104,12 +141,19 @@ const InvoiceSection = (props) => {
   const handleDelete = (id) => {
     const oldRows = [...rows];
 
-    const newRows = oldRows.filter((row) => row.description !== id);
+    const newRows = oldRows.filter((row, i) => i !== id);
 
     setRows(newRows);
     
   };
+
+
   return (
+
+    <div className="invoice__container">
+
+   
+
     <div className='invoice'>
       <div className='invoice-top'>
         <h3>Invoice </h3>
@@ -149,6 +193,7 @@ const InvoiceSection = (props) => {
           />
           <TextField
             label='Price'
+            id='price'
             style={{ width: "10%" }}
             value={value.numberformat}
             onChange={(val) => setValue(val.target.value)}
@@ -161,7 +206,9 @@ const InvoiceSection = (props) => {
             }}
           />
           <Button
+            type="submit"
             variant='contained' 
+            id='addInvoice'
             disabled={!value}    
             onClick={() => handleInvoice(service, jobDescription, value, qty)}
           >
@@ -183,15 +230,15 @@ const InvoiceSection = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.description}>
+              {rows.map((row, i) => (
+                <TableRow key={i}>
                   <TableCell align='left'>{row.service}</TableCell>
                   <TableCell align='left'>{row.description}</TableCell>
                   <TableCell align='right'>{row.qty}</TableCell>
                   <TableCell align='right'>${row.price}</TableCell>
                   <TableCell align='right'>${row.total}</TableCell> 
                   <TableCell align='left'>
-                    <IconButton onClick={() => handleDelete(row.description)}>
+                    <IconButton onClick={() => handleDelete(i)}>
                       <HighlightOffIcon
                         style={{ color: "rgb(194, 13, 13)", margin: "0 auto" }}
                       />
@@ -205,6 +252,10 @@ const InvoiceSection = (props) => {
                 <TableCell align='right'>${
 
                     rows.reduce((a, {total}) => {
+                      
+                      total = total.replace(',', '')
+                      a = a.replace(',', '')
+
 
                          
 
@@ -216,7 +267,7 @@ const InvoiceSection = (props) => {
                      
                     
                         
-                    }, 0)
+                    }, "0")
                 
                 }</TableCell>
               </TableRow>
@@ -224,6 +275,8 @@ const InvoiceSection = (props) => {
           </Table>    
         </TableContainer>
       </div>
+    </div>
+    <JobsBtn/>
     </div>
   ); 
 };
