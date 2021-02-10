@@ -9,6 +9,7 @@ import { alpha } from '@material-ui/core/styles'
 
 
 Amplify.configure(config)
+require('dotenv').config()
 
 ReactDOM.render(
   <React.StrictMode>
