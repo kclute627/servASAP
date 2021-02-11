@@ -209,6 +209,7 @@ const InvoiceSection = (props) => {
             type="submit"
             variant='contained' 
             id='addInvoice'
+            color='primary'
             disabled={!value}    
             onClick={() => handleInvoice(service, jobDescription, value, qty)}
           >

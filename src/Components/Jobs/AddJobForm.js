@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "date-fns";
 import TextField from "@material-ui/core/TextField";
+import FileDropForm from "./FileDropForm";
 
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -8,16 +9,12 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import InvoiceSection from "./InvoiceSection";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-
+import {Autocomplete} from '@material-ui/lab';
+import Button from "@material-ui/core/Button";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
-import useOnclickOutside from "react-cool-onclickoutside";
-import PlacesAutocomplete from "./PlacesAutocomplete";
+
+import PlacesAutocomplete from "./PlacesAutocomplete"; 
 
 const servers = [
   {
@@ -43,21 +40,10 @@ const court = [
 const AddJobForm = (props) => {
   const [server, setServers] = useState("Blank");
   const [courts, setCourt] = useState("Blank");
-  const [courtBtn, setCourtBtn] = useState(false);
+  const [company, setCompany] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [dueDate, setDueDate] = useState(new Date());
   const [rush, setRush] = useState(false);
-  const [address, setAddress] = useState({
-    city: "",
-    query: "",
-    zip: "",
-    state: "",
-    suite: "",
-    lat: "",
-    long: "",
-  });
-
-  useEffect(() => {}, []);
 
   const handleChange = (event) => {
     if (event.target.name === "Servers") return setServers(event.target.value);
@@ -74,7 +60,9 @@ const AddJobForm = (props) => {
           <div className='form-item'>
             <TextField
               id='outlined-basic'
+              autoComplete='new-password'
               label='Company Name'
+              onChange={(company) => setCompany(company)}
               variant='outlined'
               style={{ width: "100%" }}
             />
@@ -121,25 +109,21 @@ const AddJobForm = (props) => {
           <h3>Process Server </h3>
           <div className='form-group-span'></div>
           <div className='form-item'>
-            <TextField
+            <Autocomplete
+              freeSolo
               id='outlined-basic'
               label='Process Server'
+              autoComplete='new-password'
               variant='outlined'
               value={server}
-              select
+              options={servers.map((option) => option.name)}
               onChange={handleChange}
               style={{ width: "100%" }}
               name='Servers'
-              SelectProps={{
-                native: true,
-              }}
-            >
-              {servers.map((option) => (
-                <option key={option.name} value={option.name}>
-                  {option.name}
-                </option>
-              ))}
-            </TextField>
+              renderInput={(params) => (
+                <TextField {...params} label="freeSolo" margin="normal" variant="outlined" />
+              )}
+            /> 
           </div>
 
           <div>
@@ -166,7 +150,7 @@ const AddJobForm = (props) => {
               <TextField
                 id='outlined-basic'
                 label='Defendant'
-                autoComplete="new-password"
+                autoComplete='new-password'
                 variant='outlined'
                 style={{ width: "100%" }}
               />
@@ -178,7 +162,7 @@ const AddJobForm = (props) => {
                   autoOk
                   variant='inline'
                   label='Court Date'
-                  autoComplete="new-password"
+                  autoComplete='new-password'
                   value={selectedDate}
                   onChange={(newValue) => {
                     setSelectedDate(newValue);
@@ -194,7 +178,7 @@ const AddJobForm = (props) => {
                 id='outlined-basic'
                 label='Court Name'
                 variant='outlined'
-                autoComplete="new-password"
+                autoComplete='new-password'
                 name='court'
                 value={courts}
                 select
@@ -257,7 +241,7 @@ const AddJobForm = (props) => {
             id='outlined-basic'
             label='Name'
             variant='outlined'
-            autoComplete="new-password"
+            autoComplete='new-password'
             style={{ width: "100%" }}
           />
         </div>
@@ -266,6 +250,11 @@ const AddJobForm = (props) => {
         <div className='form-item'>
           <PlacesAutocomplete />
         </div>
+        
+
+        <FileDropForm />
+
+
         
       </form>
       <InvoiceSection />

@@ -164,7 +164,7 @@
     // margin: 0 auto;
 
     & div {
-      margin: 0 0.51rem;
+      margin: 0 0.51rem; 
     }
   }
 }
@@ -188,6 +188,34 @@
             background-color: rgb(214, 214, 214);
         }
     }
+}
+
+.h4{
+    margin-top: 2rem;
+    margin-bottom: .5rem;
+}
+
+
+.MuiDropzoneArea{
+
+&-root{
+   min-height: 8rem !important;
+}
+&-text{
+    margin: 1rem !important
+}
+&-textcontainer{
+}
+
+}
+
+.chipContainer{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 1rem;
+
 }
 
 

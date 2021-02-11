@@ -1,18 +1,20 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import './scss/main.scss'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Amplify from 'aws-amplify'
+import Amplify from 'aws-amplify' 
 import config from './aws-exports'
-import { alpha } from '@material-ui/core/styles'  
-
+import { alpha } from '@material-ui/core/styles'
+import {Helmet} from "react-helmet";
 
 Amplify.configure(config)
 require('dotenv').config()
 
+
 ReactDOM.render(
   <React.StrictMode>
+    
     <App />
   </React.StrictMode>,
   document.getElementById('root') 
