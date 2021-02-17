@@ -1,4 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ADD_JOB_FORM_CASEDEF,
+  ADD_JOB_FORM_CASENUMBER,
+  ADD_JOB_FORM_CASEPLANTIFF,
+  ADD_JOB_FORM_CLIENTNAME,
+  ADD_JOB_FORM_CLIENTREF,
+  ADD_JOB_FORM_COURTDATE,
+  ADD_JOB_FORM_COURTNAME,
+  ADD_JOB_FORM_DUEDATE,
+  ADD_JOB_FORM_INSTRUCTIONS,
+  ADD_JOB_FORM_PERSONSERVED,
+  ADD_JOB_FORM_RUSH,
+  ADD_JOB_FORM_SERVER,
+} from "../../constants/addJobConstants";
 import "date-fns";
 import TextField from "@material-ui/core/TextField";
 import FileDropForm from "./FileDropForm";
@@ -9,12 +24,12 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import InvoiceSection from "./InvoiceSection";
-import {Autocomplete} from '@material-ui/lab';
+import { Autocomplete } from "@material-ui/lab";
 import Button from "@material-ui/core/Button";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-
-import PlacesAutocomplete from "./PlacesAutocomplete"; 
+import PlacesAutocomplete from "./PlacesAutocomplete";
+import { setFormData } from "../../Actions/addjobActions";
 
 const servers = [
   {
@@ -38,17 +53,19 @@ const court = [
 ];
 
 const AddJobForm = (props) => {
-  const [server, setServers] = useState("Blank");
-  const [courts, setCourt] = useState("Blank");
-  const [company, setCompany] = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [dueDate, setDueDate] = useState(new Date());
-  const [rush, setRush] = useState(false);
+  
+  const dispatch = useDispatch();
+  let formData = useSelector((state) => state.setFormData)
+
+
+
+ useEffect(() => {
+  ;
+  
+ }, [])
 
   const handleChange = (event) => {
-    if (event.target.name === "Servers") return setServers(event.target.value);
-
-    if (event.target.name === "court") return setCourt(event.target.value);
+    dispatch(setFormData(event.target.value, event.target.name));
   };
 
   return (
@@ -62,40 +79,12 @@ const AddJobForm = (props) => {
               id='outlined-basic'
               autoComplete='new-password'
               label='Company Name'
-              onChange={(company) => setCompany(company)}
+              name={ADD_JOB_FORM_CLIENTNAME}  
+              onChange={handleChange}
               variant='outlined'
               style={{ width: "100%" }}
             />
           </div>
-          {/* <div className='form-item'>
-            <TextField
-              id='outlined-basic'
-              label='First Name'
-              variant='outlined'
-              style={{ width: "55%", marginRight: "2rem" }}
-            />
-            <TextField
-              id='outlined-basic'
-              label='Last Name'
-              variant='outlined'
-              style={{ width: "55%" }}
-            />
-          </div>
-
-          <div className='form-item'>
-            <TextField
-              style={{ width: "55%", marginRight: "2rem" }}
-              id='outlined-basic'
-              label='Phone'
-              variant='outlined'
-            />
-            <TextField
-              id='outlined-basic'
-              label='Email'
-              variant='outlined'
-              style={{ width: "55%" }}
-            />
-          </div> */}
 
           <div className='form-item'>
             <TextField
@@ -103,6 +92,8 @@ const AddJobForm = (props) => {
               label='Client Ref Number'
               variant='outlined'
               style={{ width: "100%" }}
+              name={ADD_JOB_FORM_CLIENTREF}
+              onChange={handleChange}
             />
           </div>
 
@@ -115,15 +106,21 @@ const AddJobForm = (props) => {
               label='Process Server'
               autoComplete='new-password'
               variant='outlined'
-              value={server}
               options={servers.map((option) => option.name)}
-              onChange={handleChange}
               style={{ width: "100%" }}
               name='Servers'
               renderInput={(params) => (
-                <TextField {...params} label="freeSolo" margin="normal" variant="outlined" />
+                <TextField
+                  {...params}
+                  label='Process Server'
+                  margin='normal'
+                  variant='outlined'
+                  name={ADD_JOB_FORM_SERVER}
+                  onChange={handleChange}
+                  onSelect={handleChange}
+                />
               )}
-            /> 
+            />
           </div>
 
           <div>
@@ -135,6 +132,8 @@ const AddJobForm = (props) => {
                 label='Case Number'
                 variant='outlined'
                 style={{ width: "100%" }}
+                name={ADD_JOB_FORM_CASENUMBER}
+                onChange={handleChange}
               />
             </div>
             <div className='form-item'>
@@ -143,6 +142,8 @@ const AddJobForm = (props) => {
                 label='Plantiff'
                 variant='outlined'
                 style={{ width: "100%" }}
+                name={ADD_JOB_FORM_CASEPLANTIFF}
+                onChange={handleChange}
               />
             </div>
 
@@ -153,6 +154,8 @@ const AddJobForm = (props) => {
                 autoComplete='new-password'
                 variant='outlined'
                 style={{ width: "100%" }}
+                name={ADD_JOB_FORM_CASEDEF}
+                onChange={handleChange} 
               />
             </div>
             <div className='form-item'>
@@ -163,16 +166,16 @@ const AddJobForm = (props) => {
                   variant='inline'
                   label='Court Date'
                   autoComplete='new-password'
-                  value={selectedDate}
+                  value={formData.courtDate}
                   onChange={(newValue) => {
-                    setSelectedDate(newValue);
+                    dispatch(setFormData(newValue, ADD_JOB_FORM_COURTDATE));
                   }}
                 />
               </MuiPickersUtilsProvider>
             </div>
 
             <div className='form-item'>
-              {/* try to find an autocomplete solution  */}
+              {/*todo --- try to find an autocomplete solution where courts are loaded from the user / company profile  */}
 
               <TextField
                 id='outlined-basic'
@@ -180,13 +183,13 @@ const AddJobForm = (props) => {
                 variant='outlined'
                 autoComplete='new-password'
                 name='court'
-                value={courts}
                 select
-                onChange={handleChange}
                 style={{ width: "100%" }}
                 SelectProps={{
                   native: true,
                 }}
+                name={ADD_JOB_FORM_COURTNAME}
+                onChange={handleChange}
               >
                 {court.map((option) => (
                   <option key={option.name} value={option.name}>
@@ -203,8 +206,10 @@ const AddJobForm = (props) => {
             <FormControlLabel
               control={
                 <Switch
-                  checked={rush}
-                  onChange={() => setRush(!rush)}
+                  checked={formData.rush}
+                  onChange={() =>
+                    dispatch(setFormData(!formData.rush, ADD_JOB_FORM_RUSH))
+                  }
                   name='rush'
                   color='primary'
                 />
@@ -215,22 +220,26 @@ const AddJobForm = (props) => {
               <KeyboardDatePicker
                 format='MM/dd/yyyy'
                 autoOk
-                variant='inline'
+                variant='inline' 
                 label='Due Date'
-                value={dueDate}
+                value={formData.dueDate}
                 style={{ width: "35%" }}
                 onChange={(newValue) => {
-                  setDueDate(newValue);
+                  dispatch(setFormData(newValue, ADD_JOB_FORM_DUEDATE));
                 }}
               />
             </MuiPickersUtilsProvider>
           </div>
           <div className='form-item'>
+            {/* todo - Put Chips in Like I did for the description of the documents being served */}
             <textarea
               name=''
               id=''
               placeholder='Process Server Instructions'
               className='form-textarea'
+              value={formData.serverInstructions}
+              name={ADD_JOB_FORM_INSTRUCTIONS}
+              onChange={handleChange}
             ></textarea>
           </div>
         </div>
@@ -243,19 +252,19 @@ const AddJobForm = (props) => {
             variant='outlined'
             autoComplete='new-password'
             style={{ width: "100%" }}
+            name={ADD_JOB_FORM_PERSONSERVED}
+            onChange={handleChange}
           />
         </div>
         <h3> Service Address </h3>
         <div className='form-group-span'></div>
         <div className='form-item'>
-          <PlacesAutocomplete />
-        </div>
+          <PlacesAutocomplete 
         
+          />
+        </div>
 
         <FileDropForm />
-
-
-        
       </form>
       <InvoiceSection />
     </>

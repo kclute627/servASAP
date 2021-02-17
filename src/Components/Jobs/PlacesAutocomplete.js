@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
-
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { setFormData } from "../../Actions/addjobActions";
+import {ADD_JOB_FORM_SERVICEADDRESS, ADD_JOB_FORM_SERVICEADDRESS_ADDRESS} from '../../constants/addJobConstants';
 
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -9,7 +12,14 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 
 const PlacesAutocompleteComponent = (props) => {
-  const [addAddressBtn, setAddAddressBtn] = useState(false); 
+
+
+  let formData = useSelector((state) => state.setFormData)
+  
+  const dispatch = useDispatch();
+
+
+  const [addAddressBtn, setAddAddressBtn] = useState(false);
   const [address, setAddress] = useState({
     fullAddress: "",
     street: "",
@@ -29,13 +39,19 @@ const PlacesAutocompleteComponent = (props) => {
   });
 
   const handleChange = (e) => {
-    setAddress({ ...address, [e.target.name]: e.target.value });
+    let updatedAddress = {...formData.serviceAddress, [e.target.name]: e.target.value }
+    dispatch(setFormData(updatedAddress, ADD_JOB_FORM_SERVICEADDRESS_ADDRESS))
+   
   };
+
+  //updated all the alt Address INFORMATION
   const handleAutoChange = (fullAddress) => {
-    setAddress({ ...address, fullAddress });
+    dispatch(setFormData(fullAddress, ADD_JOB_FORM_SERVICEADDRESS))
   };
   const handleAltAutoChange = (fullAddress) => {
-    setAltAddress({ ...address, fullAddress });
+
+    dispatch(setFormData(fullAddress, ADD_JOB_FORM_SERVICEADDRESS))
+    
   };
 
   const handleAltSelect = async (newAddress) => {
@@ -43,10 +59,10 @@ const PlacesAutocompleteComponent = (props) => {
       const results = await geocodeByAddress(newAddress);
       const latLang = await getLatLng(results[0]);
 
-      console.log(results, "results");
+     
 
       const resultsArr = results[0].formatted_address.split(",");
-      console.log(resultsArr[2].split(" "), "result arr");
+     
 
       setAltAddress({
         ...address,
@@ -67,20 +83,25 @@ const PlacesAutocompleteComponent = (props) => {
       const results = await geocodeByAddress(newAddress);
       const latLang = await getLatLng(results[0]);
 
-      console.log(results, "results");
+    
 
       const resultsArr = results[0].formatted_address.split(",");
-      console.log(resultsArr[2].split(" "), "result arr");
+    
 
-      setAddress({
-        ...address,
+      let updatedAddress = {
+        
         street: resultsArr[0],
         city: resultsArr[1],
         state: resultsArr[2].split(" ")[1],
         zip: resultsArr[2].split(" ")[2],
 
-        fullAddress: results[0].formatted_address,
-      });
+        fullServiceAddress: results[0].formatted_address,
+        lat: latLang.lat,
+        lng: latLang.lng,
+      }; 
+
+      dispatch(setFormData(updatedAddress, ADD_JOB_FORM_SERVICEADDRESS_ADDRESS))
+
     } catch (error) {
       console.log(error);
     }
@@ -99,8 +120,8 @@ const PlacesAutocompleteComponent = (props) => {
     });
   };
 
-  const { fullAddress, city, street, zip, state, suite } = address;
-
+  const { fullServiceAddress, city, street, zip, state, suite } = formData.serviceAddress;
+   
   const addtionalAddress = (
     <div>
       <h4 className='h4'>Alternative Address</h4>
@@ -116,7 +137,6 @@ const PlacesAutocompleteComponent = (props) => {
             <div>
               <TextField
                 label='Service Address'
-                variant='outlined'
                 style={{ width: "100%" }}
                 autoComplete='new-password'
                 name='fullAddress'
@@ -221,9 +241,9 @@ const PlacesAutocompleteComponent = (props) => {
   return (
     <div>
       <PlacesAutocomplete
-        value={fullAddress}
+        value={formData.serviceAddress.fullServiceAddress} 
         onChange={handleAutoChange}
-        onSelect={handleSelect}
+        onSelect={handleSelect} 
         style={{ width: "100%" }}
         name='fullAddress'
       >
@@ -235,7 +255,7 @@ const PlacesAutocompleteComponent = (props) => {
                 style={{ width: "100%" }}
                 autoComplete='new-password'
                 name='fullAddress'
-                variant='outlined' 
+                variant='outlined'
                 {...getInputProps({
                   placeholder: "Start Typing Service Address",
                   className: "location-search-input",
