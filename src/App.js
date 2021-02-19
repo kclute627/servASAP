@@ -16,7 +16,7 @@ const App = () => {
    
   }, []); 
 
-  const { currentPage } = dashPage;
+  // const { currentPage } = dashPage;
   return (
     <Router>
       <div className='App'>

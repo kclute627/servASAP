@@ -1,6 +1,4 @@
 import account from '../Assets/account_circle.svg';
-import dashboard from '../Assets/equalizer.svg'
-import flag from '../Assets/flag.svg'
 import clip from '../Assets/clipboard-text.svg'
 import jobs from '../Assets/paperplane.svg'
 import folder from '../Assets/folder.svg';

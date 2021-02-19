@@ -1,10 +1,10 @@
-import React, { useState, useReducer } from "react";
+import React, { useState} from "react";
 import SVG from "react-inlinesvg";
 import { Link } from "react-router-dom";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import IconButton from "@material-ui/core/IconButton";
-import { grey, purple } from "@material-ui/core/colors";
+import { grey } from "@material-ui/core/colors";
 import Avatar from "@material-ui/core/Avatar";
 import logo from "../Assets/logo-white.png";
 
@@ -27,8 +27,8 @@ const Nav = ({ dispatch }) => {
         <span></span>
       </div>
       <div className={open ? "nav__drawer-middle" : "nav__drawer-middle mg"}>
-        {navList.map((link) => (
-          <Link to={link.link}>
+        {navList.map((link, i ) => (
+          <Link to={link.link} key={i}>
             <li
               className='nav__drawer-items'
               onClick={() => dispatch({ type: `${link.type}` })}

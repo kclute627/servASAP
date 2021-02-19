@@ -1,26 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { DropzoneArea } from "material-ui-dropzone";
-import TextField from "@material-ui/core/TextField";
+
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
-import {
-  ADD_JOB_FORM_OTHERDOCS,
-  ADD_JOB_FORM_SERVICE_DOCUMENTS,
-  ADD_JOB_FORM_SERVICE_DOCUMENTS_DESCRIPTION,
-} from "../../constants/addJobConstants";
-import { useDispatch, useSelector } from "react-redux";
-import { setFormData } from "../../Actions/addjobActions";
 
-const FileDropForm = () => {
-  const [serviceFiles, setServiceFiles] = useState([]);
-  const [otherFiles, setOtherFiles] = useState([]);
-  
-  const [numberOfFiles, setNumberOfFiles] = useState(serviceFiles.length)  
-  const dispatch = useDispatch();
-  let formData = useSelector((state) => state.setFormData);
-
-
+const FileDropForm = ({ setFormData, formData }) => {
   const commonDocuments = [
     "Summons",
     "Complaint",
@@ -56,26 +41,43 @@ const FileDropForm = () => {
 
   const handleChip = (text) => {
     if (formData.documents.description.length === 0) {
-      return   dispatch(setFormData(text, ADD_JOB_FORM_SERVICE_DOCUMENTS_DESCRIPTION ))
-      
+      return setFormData({
+        ...formData,
+
+        documents: { ...formData.documents, description: text },
+      });
     }
 
     let newDescription = `${formData.documents.description}; ${text}`;
-    dispatch(setFormData(newDescription, ADD_JOB_FORM_SERVICE_DOCUMENTS_DESCRIPTION ))
+    setFormData({
+      ...formData,
+
+      documents: { ...formData.documents, description: newDescription },
+    });
   };
 
-  const handleChange = (e) => {
-    dispatch(setFormData(e.target.value, ADD_JOB_FORM_SERVICE_DOCUMENTS_DESCRIPTION ))
-  };
   const handleDocuments = (file, type) => {
     /// look into amplyfy s3 storage // combine pdf's
 
-    if (type === ADD_JOB_FORM_OTHERDOCS) {
-      return setOtherFiles(file);
+    if (type === "OTHER") {
+      return setFormData({
+        ...formData,
+        documents: { ...formData.documents, otherDocs: file },
+      });
     }
 
-    setServiceFiles(file);
+    return setFormData({
+      ...formData,
 
+      documents: { ...formData.documents, serviceDocs: file },
+    });
+  };
+
+  const handleDescription = (e) => {
+    setFormData({
+      ...formData,
+      documents: { ...formData.documents, description: e.target.value },
+    });
   };
 
   return (
@@ -88,7 +90,7 @@ const FileDropForm = () => {
           <h4>
             Common Documents - Click All That Apply or Start Typing Below{" "}
           </h4>
-          <h5></h5>
+          
           <Paper component='ul' className={classes.root}>
             {commonDocuments.map((doc, i) => (
               <Chip
@@ -101,20 +103,24 @@ const FileDropForm = () => {
             ))}
           </Paper>
           <textarea
-            style={{ width: "97%", height: "5rem", margin: "1rem 0", fontSize: '1.1rem', fontWeight: 700 }}
-            name=''
+            style={{
+              width: "97%",
+              height: "5rem",
+              margin: "1rem 0",
+              fontSize: "1.1rem",
+              fontWeight: 700,
+            }}
+            
             id=''
             placeholder='Documents To Be Served (As You Want Them To Appear on the Affidavit)'
             className='form-textarea'
             value={formData.documents.description}
             name='description'
-            onChange={handleChange}
+            onChange={handleDescription}
           ></textarea>
           <DropzoneArea
             className='dropZone'
-            onChange={(files) =>
-              handleDocuments(files, ADD_JOB_FORM_SERVICE_DOCUMENTS)
-            }
+            onChange={(files) => handleDocuments(files)}
             dropzoneText='Drag or Click To Add All Service Documents'
             showPreviews={true}
             showPreviewsInDropzone={false}
@@ -129,29 +135,29 @@ const FileDropForm = () => {
         </div>
       </div>
       <h3 style={{ marginTop: "2rem" }}>
-        Other Docs - Pictures, Signed Proofs, etc.
-      </h3>
-      <div className='form-group-span' style={{ marginBottom: "2rem" }}></div>
+          Other Docs - Pictures, Signed Proofs, etc.
+        </h3>
+        <div className='form-group-span' style={{ marginBottom: "2rem" }}></div>
 
-      <div className='form-item' style={{ margin: 0 }}>
-        <div style={{ width: "100%", marginTop: "1.25rem" }}>
-          <DropzoneArea
-            className='dropZone'
-            onChange={(files) => handleDocuments(files, ADD_JOB_FORM_OTHERDOCS)}
-            dropzoneText='Drag or Click To Add Other Docs'
-            showPreviews={true}
-            showPreviewsInDropzone={false}
-            filesLimit={3}
-            maxFileSize={5000000}
-            useChipsForPreview
-            previewGridProps={{
-              container: { spacing: 1, direction: "row" },
-            }}
-            previewChipProps={{ classes: { root: classes.previewChip } }}
-            previewText='Other Documents'
-          />
+        <div className='form-item' style={{ margin: 0 }}>
+          <div style={{ width: "100%", marginTop: "1.25rem" }}>
+            <DropzoneArea
+              className='dropZone'
+              onChange={(files) => handleDocuments(files, "OTHER")}
+              dropzoneText='Drag or Click To Add Other Docs'
+              showPreviews={true}
+              showPreviewsInDropzone={false}
+              filesLimit={3}
+              maxFileSize={5000000}
+              useChipsForPreview
+              previewGridProps={{
+                container: { spacing: 1, direction: "row" },
+              }}
+              previewChipProps={{ classes: { root: classes.previewChip } }}
+              previewText='Other Documents'
+            />
+          </div>
         </div>
-      </div>
     </>
   );
 };

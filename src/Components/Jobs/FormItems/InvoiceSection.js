@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import JobsBtn from "./JobBtn";
+import JobsBtn from "../JobBtn";
 import TextField from "@material-ui/core/TextField";
 import NumberFormat from "react-number-format";
 import Select from "@material-ui/core/Select";
@@ -21,13 +21,13 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import {
   ADD_JOB_FORM_INVOICE,
   ADD_JOB_FORM_INVOICE_DELETE,
-} from "../../constants/addJobConstants";
+} from "../../../constants/addJobConstants";
 import { useDispatch, useSelector } from "react-redux";
-import { setFormData } from "../../Actions/addjobActions";
+import { setFormData } from "../../../Actions/addjobActions"; 
 
-// todo - make delete work with redux
+// todo - make delete work with redux  
 
-const services = [
+const services = [ 
   "Service of Process",
   "Witness Fee",
   "Investigations",
@@ -76,7 +76,7 @@ const InvoiceSection = (props) => {
   const [jobDescription, setJobDescription] = useState("");
 
   const [qty, setQty] = useState(1);
-  const [rows, setRows] = useState([]);
+  
 
   const dispatch = useDispatch();
   let formData = useSelector((state) => state.setFormData);
@@ -178,7 +178,7 @@ const InvoiceSection = (props) => {
               label='Price'
               id='price'
               style={{ width: "10%" }}
-              value={value.numberformat}
+              
               onChange={(val) => setValue(val.target.value)}
               name='numberformat'
               id='formatted-numberformat-input'
