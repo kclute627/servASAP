@@ -1,23 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  ADD_JOB_FORM_CASEDEF,
-  ADD_JOB_FORM_CASENUMBER,
-  ADD_JOB_FORM_CASEPLANTIFF,
-  ADD_JOB_FORM_CLIENTNAME,
-  ADD_JOB_FORM_CLIENTREF,
-  ADD_JOB_FORM_COURTDATE,
-  ADD_JOB_FORM_COURTNAME,
-  ADD_JOB_FORM_DUEDATE,
-  ADD_JOB_FORM_INSTRUCTIONS,
-  ADD_JOB_FORM_PERSONSERVED,
-  ADD_JOB_FORM_RUSH,
-  ADD_JOB_FORM_SERVER,
-} from "../../constants/addJobConstants";
 import "date-fns";
 import TextField from "@material-ui/core/TextField";
 import FileDropForm from "./FileDropForm";
-
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -27,9 +11,16 @@ import InvoiceSection from "./InvoiceSection";
 import { Autocomplete } from "@material-ui/lab";
 import Button from "@material-ui/core/Button";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { DropzoneArea } from "material-ui-dropzone";
 import Switch from "@material-ui/core/Switch";
-import PlacesAutocomplete from "./PlacesAutocomplete";
-import { setFormData } from "../../Actions/addjobActions";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
+import Chip from "@material-ui/core/Chip";
+import Paper from "@material-ui/core/Paper";
+
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from "react-places-autocomplete";
 
 const servers = [
   {
@@ -52,21 +43,322 @@ const court = [
   },
 ];
 
+const commonDocuments = [
+  "Summons",
+  "Complaint",
+  "Subpoena",
+  "Subpoena to Testify",
+  "Subpoena for Deposition",
+  "Subpoena to Produce Documents",
+  "Exhibits",
+];
+
+const initialState = {
+  clientName: "",
+  clientRef: "",
+  server: "",
+  caseNumber: "",
+  plantiff: "",
+  defendant: "",
+  courtDate: new Date(),
+  courtName: "",
+  rush: false,
+  dueDate: new Date(),
+  serverInstructions: "",
+  personBeingServed: "",
+  serviceAddress: {
+    fullServiceAddress: "",
+    street: "",
+    suite: "",
+    city: "",
+    state: "",
+    zip: "",
+    lat: "",
+    lng: "",
+  },
+  altAddress: {
+    fullServiceAddress: "",
+    street: "",
+    suite: "",
+    city: "",
+    state: "",
+    zip: "",
+    lat: "",
+    lng: "",
+  },
+  documents: {
+    description: "",
+    serviceDocs: [],
+    otherDocs: [],
+  },
+  invoice: [],
+};
+
 const AddJobForm = (props) => {
-  
-  const dispatch = useDispatch();
-  let formData = useSelector((state) => state.setFormData)
-
-
-
- useEffect(() => {
-  ;
-  
- }, [])
+  const [formData, setFormData] = useState(initialState);
+  const [addAddressBtn, setAddAddressBtn] = useState(false);
 
   const handleChange = (event) => {
-    dispatch(setFormData(event.target.value, event.target.name));
+    setFormData({ ...formData, [event.target.name]: event.target.value });
   };
+
+  const handleAutoChange = (fullAddress) => {
+    setFormData({
+      ...formData,
+      ...formData.serviceAddress,
+      serviceAddress: { fullServiceAddress: fullAddress },
+    });
+  };
+  const handleAltAutoChange = (fullAddress) => {
+    setFormData({
+      ...formData,
+      ...formData.altAddress,
+      altAddress: { fullServiceAddress: fullAddress },
+    });
+  };
+
+  const btnClickHandler = (e) => {
+    e.preventDefault();
+    setAddAddressBtn(!addAddressBtn);
+  };
+
+  const handleSelect = async (newAddress) => {
+    try {
+      const results = await geocodeByAddress(newAddress);
+      const latLang = await getLatLng(results[0]);
+
+      const resultsArr = results[0].formatted_address.split(",");
+
+      let updatedAddress = {
+        street: resultsArr[0],
+        city: resultsArr[1],
+        state: resultsArr[2].split(" ")[1],
+        zip: resultsArr[2].split(" ")[2],
+
+        fullServiceAddress: results[0].formatted_address,
+        lat: latLang.lat,
+        lng: latLang.lng,
+      };
+
+      setFormData({
+        ...formData,
+        ...formData.serviceAddress,
+        serviceAddress: { ...updatedAddress },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleAltSelect = async (newAddress) => {
+    try {
+      const results = await geocodeByAddress(newAddress);
+      const latLang = await getLatLng(results[0]);
+
+      const resultsArr = results[0].formatted_address.split(",");
+
+      let updatedAddress = {
+        street: resultsArr[0],
+        city: resultsArr[1],
+        state: resultsArr[2].split(" ")[1],
+        zip: resultsArr[2].split(" ")[2],
+
+        fullServiceAddress: results[0].formatted_address,
+        lat: latLang.lat,
+        lng: latLang.lng,
+      };
+
+      setFormData({
+        ...formData,
+        ...formData.altAddress,
+        altAddress: { ...updatedAddress },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const useStyles = makeStyles((theme) =>
+    createStyles({
+      root: {
+        display: "flex",
+        justifyContent: "center",
+        flexWrap: "wrap",
+        marginTop: "1rem",
+        padding: "1rem .5rem",
+        "& > *": {
+          margin: theme.spacing(0.5),
+        },
+      },
+
+      previewChip: {
+        minWidth: 260,
+        maxWidth: 410,
+        backgroundColor: "#ededed",
+      },
+    })
+  );
+
+  const classes = useStyles();
+
+  const handleChip = (text) => {
+    if (formData.documents.description.length === 0) {
+      return setFormData({
+        ...formData,
+
+        documents: { ...formData.documents, description: text },
+      });
+    }
+
+    let newDescription = `${formData.documents.description}; ${text}`;
+    setFormData({
+      ...formData,
+
+      documents: { ...formData.documents, description: newDescription },
+    });
+  };
+
+  const handleDocuments = (file, type) => {
+    /// look into amplyfy s3 storage // combine pdf's
+
+    if (type === "OTHER") {
+      return setFormData({
+        ...formData,
+        documents: { ...formData.documents, otherDocs: file },
+      });
+    }
+
+    return setFormData({
+      ...formData,
+
+      documents: { ...formData.documents, serviceDocs: file },
+    });
+  };
+
+  const handleDescription = (e) => {
+    setFormData({...formData, documents: {...formData.documents, description: e.target.value}})
+  }
+
+  const { altAddress } = formData;
+
+  const addtionalAddress = (
+    <div>
+      <h4 className='h4'>Alternative Address</h4>
+      <PlacesAutocomplete
+        value={formData.altAddress.fullServiceAddress}
+        onChange={handleAltAutoChange}
+        onSelect={handleAltSelect}
+        style={{ width: "100%" }}
+        name='fullServiceAddress'
+      >
+        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => {
+          return (
+            <div>
+              <TextField
+                label='Service Address'
+                style={{ width: "100%" }}
+                autoComplete='new-password'
+                name='fullAddress'
+                variant='outlined'
+                {...getInputProps({
+                  placeholder: "Start Typing Service Address",
+                  className: "location-search-input",
+                  autoComplete: "new-password",
+                  name: "fullAddress",
+                })}
+              />
+
+              <div className='autocomplete-dropdown-container'>
+                {loading && <div>... Loading </div>}
+                {suggestions.map((suggestion) => {
+                  const className = suggestion.active
+                    ? "suggestion-item--active"
+                    : "suggestion-item";
+
+                  const style = suggestion.active
+                    ? {
+                        backgroundColor: "rgb(202, 202, 202)",
+                        cursor: "pointer",
+                      }
+                    : { backgroundColor: "#ffffff", cursor: "pointer" };
+
+                  return (
+                    <div
+                      className='autocomplete-dropdown'
+                      style={{}}
+                      {...getSuggestionItemProps(suggestion, {
+                        className,
+                        style,
+                      })}
+                      key={suggestion.description}
+                      name='fullAddress'
+                    >
+                      <span> {suggestion.description} </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        }}
+      </PlacesAutocomplete>
+      <div className='form-item' style={{ margin: "1rem 0", padding: 0 }}>
+        <TextField
+          value={altAddress.street}
+          name='street'
+          id='outlined-basic'
+          label='Street'
+          variant='outlined'
+          style={{ width: "70%" }}
+          autoComplete='new-password'
+          onChange={(e) => handleChange(e)}
+        />
+        <TextField
+          id='outlined-basic'
+          label='Suite / Apt #'
+          variant='outlined'
+          value={altAddress.suite}
+          name='suite'
+          style={{ width: "25%" }}
+          autoComplete='new-password'
+          onChange={(e) => handleChange(e)}
+        />
+      </div>
+      <div className='form-item' style={{ margin: 0, padding: 0 }}>
+        <TextField
+          id='outlined-basic'
+          name='city'
+          label='City'
+          value={altAddress.city}
+          variant='outlined'
+          autoComplete='new-password'
+          onChange={(e) => handleChange(e)}
+          style={{ width: "37%" }}
+        />
+        <TextField
+          id='outlined-basic'
+          label='State'
+          name='state'
+          value={altAddress.state}
+          variant='outlined'
+          style={{ width: "37%" }}
+          onChange={(e) => handleChange(e)}
+        />
+
+        <TextField
+          id='outlined-basic'
+          label='Zip'
+          name='zip'
+          value={altAddress.zip}
+          variant='outlined'
+          style={{ width: "25%" }}
+          onChange={(e) => handleChange(e)}
+        />
+      </div>
+    </div>
+  );
+
+  const { street, suite, city, zip, state } = formData.serviceAddress;
 
   return (
     <>
@@ -79,7 +371,7 @@ const AddJobForm = (props) => {
               id='outlined-basic'
               autoComplete='new-password'
               label='Company Name'
-              name={ADD_JOB_FORM_CLIENTNAME}  
+              name='clientName'
               onChange={handleChange}
               variant='outlined'
               style={{ width: "100%" }}
@@ -92,7 +384,7 @@ const AddJobForm = (props) => {
               label='Client Ref Number'
               variant='outlined'
               style={{ width: "100%" }}
-              name={ADD_JOB_FORM_CLIENTREF}
+              name='clientRef'
               onChange={handleChange}
             />
           </div>
@@ -115,7 +407,7 @@ const AddJobForm = (props) => {
                   label='Process Server'
                   margin='normal'
                   variant='outlined'
-                  name={ADD_JOB_FORM_SERVER}
+                  name='server'
                   onChange={handleChange}
                   onSelect={handleChange}
                 />
@@ -132,7 +424,7 @@ const AddJobForm = (props) => {
                 label='Case Number'
                 variant='outlined'
                 style={{ width: "100%" }}
-                name={ADD_JOB_FORM_CASENUMBER}
+                name='caseNumber'
                 onChange={handleChange}
               />
             </div>
@@ -142,7 +434,7 @@ const AddJobForm = (props) => {
                 label='Plantiff'
                 variant='outlined'
                 style={{ width: "100%" }}
-                name={ADD_JOB_FORM_CASEPLANTIFF}
+                name='plantiff'
                 onChange={handleChange}
               />
             </div>
@@ -154,8 +446,8 @@ const AddJobForm = (props) => {
                 autoComplete='new-password'
                 variant='outlined'
                 style={{ width: "100%" }}
-                name={ADD_JOB_FORM_CASEDEF}
-                onChange={handleChange} 
+                name='defendant'
+                onChange={handleChange}
               />
             </div>
             <div className='form-item'>
@@ -168,7 +460,7 @@ const AddJobForm = (props) => {
                   autoComplete='new-password'
                   value={formData.courtDate}
                   onChange={(newValue) => {
-                    dispatch(setFormData(newValue, ADD_JOB_FORM_COURTDATE));
+                    setFormData({ ...formData, courtDate: newValue });
                   }}
                 />
               </MuiPickersUtilsProvider>
@@ -188,7 +480,7 @@ const AddJobForm = (props) => {
                 SelectProps={{
                   native: true,
                 }}
-                name={ADD_JOB_FORM_COURTNAME}
+                name='courtName'
                 onChange={handleChange}
               >
                 {court.map((option) => (
@@ -208,7 +500,7 @@ const AddJobForm = (props) => {
                 <Switch
                   checked={formData.rush}
                   onChange={() =>
-                    dispatch(setFormData(!formData.rush, ADD_JOB_FORM_RUSH))
+                    setFormData({ ...formData, rush: !formData.rush })
                   }
                   name='rush'
                   color='primary'
@@ -220,12 +512,12 @@ const AddJobForm = (props) => {
               <KeyboardDatePicker
                 format='MM/dd/yyyy'
                 autoOk
-                variant='inline' 
+                variant='inline'
                 label='Due Date'
                 value={formData.dueDate}
                 style={{ width: "35%" }}
                 onChange={(newValue) => {
-                  dispatch(setFormData(newValue, ADD_JOB_FORM_DUEDATE));
+                  setFormData({ ...formData, dueDate: newValue });
                 }}
               />
             </MuiPickersUtilsProvider>
@@ -238,7 +530,7 @@ const AddJobForm = (props) => {
               placeholder='Process Server Instructions'
               className='form-textarea'
               value={formData.serverInstructions}
-              name={ADD_JOB_FORM_INSTRUCTIONS}
+              name='serverInstructions'
               onChange={handleChange}
             ></textarea>
           </div>
@@ -252,19 +544,222 @@ const AddJobForm = (props) => {
             variant='outlined'
             autoComplete='new-password'
             style={{ width: "100%" }}
-            name={ADD_JOB_FORM_PERSONSERVED}
+            name='personBeingServed'
             onChange={handleChange}
           />
         </div>
         <h3> Service Address </h3>
         <div className='form-group-span'></div>
         <div className='form-item'>
-          <PlacesAutocomplete 
-        
-          />
+          {/* places complete */}
+          <div>
+            <PlacesAutocomplete
+              value={formData.serviceAddress.fullServiceAddress}
+              onChange={handleAutoChange}
+              onSelect={handleSelect}
+              style={{ width: "100%" }}
+              name='fullServiceAddress'
+            >
+              {({
+                getInputProps,
+                suggestions,
+                getSuggestionItemProps,
+                loading,
+              }) => {
+                return (
+                  <div>
+                    <TextField
+                      label='Service Address'
+                      style={{ width: "100%" }}
+                      autoComplete='new-password'
+                      name='fullAddress'
+                      variant='outlined'
+                      {...getInputProps({
+                        placeholder: "Start Typing Service Address",
+                        className: "location-search-input",
+                        autoComplete: "new-password",
+                        name: "fullAddress",
+                      })}
+                    />
+
+                    <div className='autocomplete-dropdown-container'>
+                      {loading && <div>... Loading </div>}
+                      {suggestions.map((suggestion) => {
+                        const className = suggestion.active
+                          ? "suggestion-item--active"
+                          : "suggestion-item";
+
+                        const style = suggestion.active
+                          ? {
+                              backgroundColor: "rgb(202, 202, 202)",
+                              cursor: "pointer",
+                            }
+                          : { backgroundColor: "#ffffff", cursor: "pointer" };
+
+                        return (
+                          <div
+                            className='autocomplete-dropdown'
+                            style={{}}
+                            {...getSuggestionItemProps(suggestion, {
+                              className,
+                              style,
+                            })}
+                            key={suggestion.description}
+                            name='fullAddress'
+                          >
+                            <span> {suggestion.description} </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              }}
+            </PlacesAutocomplete>
+            <div className='form-item' style={{ margin: "1rem 0", padding: 0 }}>
+              <TextField
+                value={street}
+                name='street'
+                id='outlined-basic'
+                label='Street'
+                variant='outlined'
+                style={{ width: "70%" }}
+                autoComplete='new-password'
+                onChange={(e) => handleChange(e)}
+              />
+              <TextField
+                id='outlined-basic'
+                label='Suite / Apt #'
+                variant='outlined'
+                value={suite}
+                name='suite'
+                style={{ width: "25%" }}
+                autoComplete='new-password'
+                onChange={(e) => handleChange(e)}
+              />
+            </div>
+            <div className='form-item' style={{ margin: 0, padding: 0 }}>
+              <TextField
+                id='outlined-basic'
+                name='city'
+                label='City'
+                value={city}
+                variant='outlined'
+                autoComplete='new-password'
+                onChange={(e) => handleChange(e)}
+                style={{ width: "37%" }}
+              />
+              <TextField
+                id='outlined-basic'
+                label='State'
+                name='state'
+                value={state}
+                variant='outlined'
+                style={{ width: "37%" }}
+                onChange={(e) => handleChange(e)}
+              />
+
+              <TextField
+                id='outlined-basic'
+                label='Zip'
+                name='zip'
+                value={zip}
+                variant='outlined'
+                style={{ width: "25%" }}
+                onChange={(e) => handleChange(e)}
+              />
+            </div>
+            {addAddressBtn && addtionalAddress}
+            <Button
+              onClick={(e) => btnClickHandler(e)}
+              style={{ marginTop: ".51rem" }}
+            >
+              {!addAddressBtn
+                ? " Add Additional Address"
+                : "Remove Additional Address"}
+            </Button>
+          </div>
+
+          {/* <PlacesAutocomplete /> */}
         </div>
 
-        <FileDropForm />
+        {/* <FileDropForm /> */}
+        <h3>Documents to Be Served</h3>
+        <div className='form-group-span'></div>
+        <div className='form-item' style={{ margin: 0 }}>
+          <div style={{ width: "100%", marginTop: "1.25rem" }}>
+            {/* //Make Clickable Chips With common Documents // then make field where you can add new Chips */}
+            <h4>
+              Common Documents - Click All That Apply or Start Typing Below{" "}
+            </h4>
+            <h5></h5>
+            <Paper component='ul' className={classes.root}>
+              {commonDocuments.map((doc, i) => (
+                <Chip
+                  label={doc}
+                  color='primary'
+                  key={i}
+                  clickable
+                  onClick={() => handleChip(doc)}
+                />
+              ))}
+            </Paper>
+            <textarea
+              style={{
+                width: "97%",
+                height: "5rem",
+                margin: "1rem 0",
+                fontSize: "1.1rem",
+                fontWeight: 700,
+              }}
+              name=''
+              id=''
+              placeholder='Documents To Be Served (As You Want Them To Appear on the Affidavit)'
+              className='form-textarea'
+              value={formData.documents.description}
+              name='description'
+              onChange={handleDescription} 
+            ></textarea>
+            <DropzoneArea
+              className='dropZone'
+              onChange={(files) => handleDocuments(files)}
+              dropzoneText='Drag or Click To Add All Service Documents'
+              showPreviews={true}
+              showPreviewsInDropzone={false}
+              filesLimit={14}
+              maxFileSize={5000000}
+              useChipsForPreview
+              previewGridProps={{ container: { spacing: 1, direction: "row" } }}
+              previewChipProps={{ classes: { root: classes.previewChip } }}
+              previewText='Documents For Service'
+            />
+            {/* {create TextForm Where I Can Name the Docuemt}  Also make user friendly for people who do not load documents   */}
+          </div>
+        </div>
+        <h3 style={{ marginTop: "2rem" }}>
+          Other Docs - Pictures, Signed Proofs, etc.
+        </h3>
+        <div className='form-group-span' style={{ marginBottom: "2rem" }}></div>
+
+        <div className='form-item' style={{ margin: 0 }}>
+          <div style={{ width: "100%", marginTop: "1.25rem" }}>
+            <DropzoneArea
+              className='dropZone'
+              onChange={(files) => handleDocuments(files, "OTHER")}
+              dropzoneText='Drag or Click To Add Other Docs'
+              showPreviews={true}
+              showPreviewsInDropzone={false}
+              filesLimit={3}
+              maxFileSize={5000000}
+              useChipsForPreview
+              previewGridProps={{
+                container: { spacing: 1, direction: "row" },
+              }}
+              previewChipProps={{ classes: { root: classes.previewChip } }}
+              previewText='Other Documents'
+            />
+          </div>
+        </div>
       </form>
       <InvoiceSection />
     </>

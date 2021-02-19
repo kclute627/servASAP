@@ -20,12 +20,6 @@ const FileDropForm = () => {
   const dispatch = useDispatch();
   let formData = useSelector((state) => state.setFormData);
 
-  useEffect(() => {
-    
-    
-  }, [serviceFiles]);
-
-   
 
   const commonDocuments = [
     "Summons",
