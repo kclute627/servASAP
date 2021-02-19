@@ -10,6 +10,11 @@
       "StackName": "amplify-serveasap-dev-132135",
       "StackId": "arn:aws:cloudformation:us-east-2:482800432370:stack/amplify-serveasap-dev-132135/0b6ef440-619e-11eb-9b5a-0601d41cde0e",
       "AmplifyAppId": "d22em4q4h55kks"
+    },
+    "categories": {
+      "auth": {
+        "serveasap0481baae": {}
+      }
     }
   }
 }

@@ -1,10 +1,16 @@
-import React from 'react'
-import Nav from '../Components/Nav'
+import React, {useReducer} from 'react'
+
+import Jobs from '../Components/Jobs';
+
+
 const Dashboard = (props) => {
+    
     return (
         <div className= 'dashboard' >
            
-            <Nav />
+          {/* <Jobs/>  */}
+        
+            
         </div>
     )
 }

@@ -1,0 +1,45 @@
+* {
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth; 
+  
+  }
+
+  a {
+    text-decoration: none;  
+
+  }
+  li{
+    text-decoration: none;
+    list-style-type: none;
+  }
+  html{
+    font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
+  }
+  
+  component {
+    grid-row: 1/-1;
+    grid-column: 2/-1;
+  }
+  /* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+body{
+
+  overflow: visible !important;
+
+}
+.MuiPickersSlideTransition-transitionContainer > * {
+  top: -4px !important;}
+  
+  
+  

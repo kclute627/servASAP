@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "serveasap",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authserveasap0481baae",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

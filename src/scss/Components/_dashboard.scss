@@ -1,0 +1,11 @@
+.App {
+    display: grid;
+    grid-template-columns: max-content 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    position: relative;
+  }
+
+  body{
+  height: 100%;
+  }
+    

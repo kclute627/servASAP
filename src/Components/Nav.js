@@ -1,56 +1,62 @@
-import React, { useState } from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Divider from "@material-ui/core/Divider";
-import Drawer from "@material-ui/core/Drawer";
+import React, { useState, useReducer } from "react";
+import SVG from "react-inlinesvg";
+import { Link } from "react-router-dom";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import MenuIcon from "@material-ui/icons/Menu";
 import IconButton from "@material-ui/core/IconButton";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
 import { grey, purple } from "@material-ui/core/colors";
+import Avatar from "@material-ui/core/Avatar";
+import logo from "../Assets/logo-white.png";
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      // Purple and green play nicely together.
-      main: purple[500],
-    },
-    secondary: {
-      // This is green.A700 as hex.
-      main: "#11cb5f",
-    },
-  },
-});
+import { navList } from "../Utils/utils";
 
-const Nav = (props) => {
+const Nav = ({ dispatch }) => {
   const [open, openHandler] = useState(true);
 
   return (
-   
-      
-        <div
-         
-          className={open ? "nav__drawer open" : "nav__drawer"}
-        >
-          <div className='icon'>
-            <IconButton onClick={() => openHandler(!open)}>
-              {!open ? (
-                <ChevronLeftIcon
-                  fontSize='large'
-                  style={{ color: grey[100] }}
-                />
-              ) : (
-                <ChevronRightIcon
-                  fontSize='large'
-                  style={{ color: grey[100] }}
-                />
-              )}
-            </IconButton>
-          </div>
-        </div>
-  
+    <div className={!open ? "nav__drawer open" : "nav__drawer"}>
+      <div className='nav__drawer-top'>
+        <Link to='/'>
+          <Avatar
+            alt='logo'
+            src={logo}
+            className={open ? "avatar-open" : "avatar"}
+          />
+        </Link>
 
+        <span></span>
+      </div>
+      <div className={open ? "nav__drawer-middle" : "nav__drawer-middle mg"}>
+        {navList.map((link) => (
+          <Link to={link.link}>
+            <li
+              className='nav__drawer-items'
+              onClick={() => dispatch({ type: `${link.type}` })}
+            >
+              <SVG
+                className='nav__drawer-items-icon'
+                src={link.icon}
+                title=' '
+              />
+              {open ? (
+                <div className='nav__drawer-items-text'>{link.text}</div>
+              ) : null}
+            </li>{" "}
+          </Link>
+        ))}
+      </div>
+      <div className='nav__drawer-bottom'>
+        <div className='icon'>
+          <IconButton onClick={() => openHandler(!open)}>
+            {open ? (
+              <ChevronLeftIcon fontSize='large' style={{ color: grey[100] }} />
+            ) : (
+              <ChevronRightIcon fontSize='large' style={{ color: grey[100] }} />
+            )}
+          </IconButton>
+        </div>
+      </div>
+    </div>
   );
 };
 
