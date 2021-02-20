@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "date-fns";
 import TextField from "@material-ui/core/TextField";
-import FileDropForm from "./FormItems/FileDropForm";
-import InvoiceSection from "./FormItems/InvoiceSection";
-import CaseInfo from "./FormItems/CaseInfo";
-import ClientInfo from "./FormItems/ClientInfo";
-import ServerInfo from "./FormItems/ServerInfo";
-import PlacesAutocompleteComponent from "./FormItems/PlacesAutocomplete";
+import FileDropForm from "./FileDropForm";
+import InvoiceSection from "./InvoiceSection";
+import CaseInfo from "./CaseInfo";
+import ClientInfo from "./ClientInfo";
+import ServerInfo from "./ServerInfo";
+import PlacesAutocompleteComponent from "./PlacesAutocomplete";
 
 const initialState = {
   clientName: "",
@@ -96,7 +96,12 @@ const AddJobForm = (props) => {
         />
         <FileDropForm setFormData={setFormData} formData={formData} />
       </form>
-      <InvoiceSection />
+      <InvoiceSection
+         setFormData={setFormData}
+         formData={formData}
+         handleChange={handleChange}
+         initialState= {initialState}
+      />
     </>
   );
 };

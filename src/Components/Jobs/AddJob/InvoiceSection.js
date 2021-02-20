@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import JobsBtn from "../JobBtn";
+import JobsBtn from "./JobBtn";
 import TextField from "@material-ui/core/TextField";
 import NumberFormat from "react-number-format";
 import Select from "@material-ui/core/Select";
@@ -18,16 +18,10 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import {
-  ADD_JOB_FORM_INVOICE,
-  ADD_JOB_FORM_INVOICE_DELETE,
-} from "../../../constants/addJobConstants";
-import { useDispatch, useSelector } from "react-redux";
-import { setFormData } from "../../../Actions/addjobActions"; 
 
-// todo - make delete work with redux  
+// todo - make delete work with redux
 
-const services = [ 
+const services = [
   "Service of Process",
   "Witness Fee",
   "Investigations",
@@ -70,16 +64,12 @@ NumberFormatCustom.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-const InvoiceSection = (props) => {
+const InvoiceSection = ({ setFormData, formData, initialState }) => {
   const [service, setService] = useState("Service of Process");
   const [value, setValue] = useState("");
   const [jobDescription, setJobDescription] = useState("");
 
   const [qty, setQty] = useState(1);
-  
-
-  const dispatch = useDispatch();
-  let formData = useSelector((state) => state.setFormData);
 
   const handleChange = (event) => {
     setService(event.target.value);
@@ -87,18 +77,31 @@ const InvoiceSection = (props) => {
 
   useEffect(() => {
     const listener = (event) => {
+      let total = value * qty;
+      total = formatter.format(total);
       if (event.code === "Enter" || event.code === "NumpadEnter") {
-        console.log(
-          "Enter key was pressed. Run your function.",
-          service,
-          jobDescription,
-          value,
-          qty
-        );
         // callMyFunction();
 
         if (value && jobDescription) {
-          handleInvoice(service, jobDescription, value, qty);
+          setFormData({
+            ...formData,
+            invoice: [
+              ...formData.invoice,
+              {
+                service,
+                description: jobDescription,
+                price: value,
+                qty,
+                total,
+              },
+            ],
+          });
+
+          setService("");
+          setValue("");
+          setQty(1);
+          setJobDescription("");
+
         }
       }
     };
@@ -106,9 +109,9 @@ const InvoiceSection = (props) => {
     return () => {
       document.removeEventListener("keydown", listener);
     };
-  }, [service, jobDescription, value, qty]);
+  }, [service, jobDescription, value, qty, formData, setFormData]);
 
-  const handleInvoice = (service, description, price, qty) => {
+  const handleInvoice = (service, description, price, qty) => { 
     let total = price * qty;
 
     total = formatter.format(total);
@@ -120,7 +123,7 @@ const InvoiceSection = (props) => {
       total,
     };
 
-    dispatch(setFormData(invoiceInfo, ADD_JOB_FORM_INVOICE));
+    setFormData({ ...formData, invoice: [...formData.invoice, invoiceInfo] });
 
     setService("");
     setValue("");
@@ -132,7 +135,7 @@ const InvoiceSection = (props) => {
 
     const newRows = oldRows.filter((row, i) => row.description !== id);
 
-    dispatch(setFormData(newRows, ADD_JOB_FORM_INVOICE_DELETE));
+    setFormData({ ...formData, invoice: [...newRows] });
   };
 
   return (
@@ -176,9 +179,8 @@ const InvoiceSection = (props) => {
             />
             <TextField
               label='Price'
-              id='price'
+           
               style={{ width: "10%" }}
-              
               onChange={(val) => setValue(val.target.value)}
               name='numberformat'
               id='formatted-numberformat-input'
@@ -240,17 +242,16 @@ const InvoiceSection = (props) => {
                   </TableCell>
                   <TableCell align='right'>
                     $
-                    {
-                      formData.invoice.reduce((a, { total }) => {
-                        total = total.replace(",", "");
-                        a = a.replace(",", "");
+                    {formData.invoice.reduce((a, { total }) => {
+                      total = total.replace(",", "");
+                      a = a.replace(",", "");
 
-                        let newTotal = parseFloat(a) + parseFloat(total);
+                      let newTotal = parseFloat(a) + parseFloat(total);
 
-                        newTotal = formatter.format(newTotal);
+                      newTotal = formatter.format(newTotal);
 
-                        return newTotal;
-                      }, "0")}
+                      return newTotal;
+                    }, "0")}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -258,7 +259,11 @@ const InvoiceSection = (props) => {
           </TableContainer>
         </div>
       </div>
-      <JobsBtn />
+      <JobsBtn
+      setFormData= {setFormData} 
+      formData = {formData}
+      initialState = {initialState}
+      />
     </div>
   );
 };

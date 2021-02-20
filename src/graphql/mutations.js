@@ -1,90 +1,195 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createTask = /* GraphQL */ `
-  mutation CreateTask(
-    $input: CreateTaskInput!
-    $condition: ModelTaskConditionInput
+export const createJobs = /* GraphQL */ `
+  mutation CreateJobs(
+    $input: CreateJobsInput!
+      : ModelJobsConditionInput
   ) {
-    createTask(input: $input, condition: $condition) {
+    createJobs(input: $input, condition: $condition) {
       id
-      title
-      description
-      status
+      clientName
+      clientRef
+      server
+      caseNumber
+      plantiff
+      defendant
+      courtDate
+      courtName
+      rush
+      dueDate
+      serverInstructions
+      personServed
+      serviceAddress {
+        fullServiceAddress
+        street
+        suite
+        city
+        state
+        zip
+        lat
+        lng
+      }
+      altAddress {
+        fullServiceAddress
+        street
+        suite
+        city
+        state
+        zip
+        lat
+        lng
+      }
+      documents {
+        description
+        serviceDocs {
+          bucket
+          region
+          key
+        }
+        otherDocs {
+          bucket
+          region
+          key
+        }
+      }
+      invoice {
+        service
+        description
+        price
+        qty
+        total
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const updateTask = /* GraphQL */ `
-  mutation UpdateTask(
-    $input: UpdateTaskInput!
-    $condition: ModelTaskConditionInput
+export const updateJobs = /* GraphQL */ `
+  mutation UpdateJobs(
+    $input: UpdateJobsInput!
+    $condition: ModelJobsConditionInput
   ) {
-    updateTask(input: $input, condition: $condition) {
+    updateJobs(input: $input, condition: $condition) {
       id
-      title
-      description
-      status
+      clientName
+      clientRef
+      server
+      caseNumber
+      plantiff
+      defendant
+      courtDate
+      courtName
+      rush
+      dueDate
+      serverInstructions
+      personServed
+      serviceAddress {
+        fullServiceAddress
+        street
+        suite
+        city
+        state
+        zip
+        lat
+        lng
+      }
+      altAddress {
+        fullServiceAddress
+        street
+        suite
+        city
+        state
+        zip
+        lat
+        lng
+      }
+      documents {
+        description
+        serviceDocs {
+          bucket
+          region
+          key
+        }
+        otherDocs {
+          bucket
+          region
+          key
+        }
+      }
+      invoice {
+        service
+        description
+        price
+        qty
+        total
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteTask = /* GraphQL */ `
-  mutation DeleteTask(
-    $input: DeleteTaskInput!
-    $condition: ModelTaskConditionInput
+export const deleteJobs = /* GraphQL */ `
+  mutation DeleteJobs(
+    $input: DeleteJobsInput!
+    $condition: ModelJobsConditionInput
   ) {
-    deleteTask(input: $input, condition: $condition) {
+    deleteJobs(input: $input, condition: $condition) {
       id
-      title
-      description
-      status
+      clientName
+      clientRef
+      server
+      caseNumber
+      plantiff
+      defendant
+      courtDate
+      courtName
+      rush
+      dueDate
+      serverInstructions
+      personServed
+      serviceAddress {
+        fullServiceAddress
+        street
+        suite
+        city
+        state
+        zip
+        lat
+        lng
+      }
+      altAddress {
+        fullServiceAddress
+        street
+        suite
+        city
+        state
+        zip
+        lat
+        lng
+      }
+      documents {
+        description
+        serviceDocs {
+          bucket
+          region
+          key
+        }
+        otherDocs {
+          bucket
+          region
+          key
+        }
+      }
+      invoice {
+        service
+        description
+        price
+        qty
+        total
+      }
       createdAt
       updatedAt
-    }
-  }
-`;
-export const createPrivateNote = /* GraphQL */ `
-  mutation CreatePrivateNote(
-    $input: CreatePrivateNoteInput!
-    $condition: ModelPrivateNoteConditionInput
-  ) {
-    createPrivateNote(input: $input, condition: $condition) {
-      id
-      content
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const updatePrivateNote = /* GraphQL */ `
-  mutation UpdatePrivateNote(
-    $input: UpdatePrivateNoteInput!
-    $condition: ModelPrivateNoteConditionInput
-  ) {
-    updatePrivateNote(input: $input, condition: $condition) {
-      id
-      content
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const deletePrivateNote = /* GraphQL */ `
-  mutation DeletePrivateNote(
-    $input: DeletePrivateNoteInput!
-    $condition: ModelPrivateNoteConditionInput
-  ) {
-    deletePrivateNote(input: $input, condition: $condition) {
-      id
-      content
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;

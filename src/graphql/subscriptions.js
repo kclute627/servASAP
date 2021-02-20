@@ -37,36 +37,186 @@ export const onDeleteTask = /* GraphQL */ `
     }
   }
 `;
-export const onCreatePrivateNote = /* GraphQL */ `
-  subscription OnCreatePrivateNote($owner: String!) {
-    onCreatePrivateNote(owner: $owner) {
+export const onCreateJobs = /* GraphQL */ `
+  subscription OnCreateJobs {
+    onCreateJobs {
       id
-      content
+      clientName
+      clientRef
+      server
+      caseNumber
+      plantiff
+      defendant
+      courtDate
+      courtName
+      rush
+      dueDate
+      serverInstructions
+      personServed
+      serviceAddress {
+        fullServiceAddress
+        street
+        suite
+        city
+        state
+        zip
+        lat
+        lng
+      }
+      altAddress {
+        fullServiceAddress
+        street
+        suite
+        city
+        state
+        zip
+        lat
+        lng
+      }
+      documents {
+        description
+        serviceDocs {
+          bucket
+          region
+          key
+        }
+        otherDocs {
+          bucket
+          region
+          key
+        }
+      }
+      invoice {
+        service
+        description
+        price
+        qty
+        total
+      }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
-export const onUpdatePrivateNote = /* GraphQL */ `
-  subscription OnUpdatePrivateNote($owner: String!) {
-    onUpdatePrivateNote(owner: $owner) {
+export const onUpdateJobs = /* GraphQL */ `
+  subscription OnUpdateJobs {
+    onUpdateJobs {
       id
-      content
+      clientName
+      clientRef
+      server
+      caseNumber
+      plantiff
+      defendant
+      courtDate
+      courtName
+      rush
+      dueDate
+      serverInstructions
+      personServed
+      serviceAddress {
+        fullServiceAddress
+        street
+        suite
+        city
+        state
+        zip
+        lat
+        lng
+      }
+      altAddress {
+        fullServiceAddress
+        street
+        suite
+        city
+        state
+        zip
+        lat
+        lng
+      }
+      documents {
+        description
+        serviceDocs {
+          bucket
+          region
+          key
+        }
+        otherDocs {
+          bucket
+          region
+          key
+        }
+      }
+      invoice {
+        service
+        description
+        price
+        qty
+        total
+      }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
-export const onDeletePrivateNote = /* GraphQL */ `
-  subscription OnDeletePrivateNote($owner: String!) {
-    onDeletePrivateNote(owner: $owner) {
+export const onDeleteJobs = /* GraphQL */ `
+  subscription OnDeleteJobs {
+    onDeleteJobs {
       id
-      content
+      clientName
+      clientRef
+      server
+      caseNumber
+      plantiff
+      defendant
+      courtDate
+      courtName
+      rush
+      dueDate
+      serverInstructions
+      personServed
+      serviceAddress {
+        fullServiceAddress
+        street
+        suite
+        city
+        state
+        zip
+        lat
+        lng
+      }
+      altAddress {
+        fullServiceAddress
+        street
+        suite
+        city
+        state
+        zip
+        lat
+        lng
+      }
+      documents {
+        description
+        serviceDocs {
+          bucket
+          region
+          key
+        }
+        otherDocs {
+          bucket
+          region
+          key
+        }
+      }
+      invoice {
+        service
+        description
+        price
+        qty
+        total
+      }
       createdAt
       updatedAt
-      owner
     }
   }
 `;

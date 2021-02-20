@@ -11,9 +11,62 @@ type Task
   description: String
   status: String
 }
-type PrivateNote @model @auth(rules: [{ allow: owner }]) {
+type Jobs @model{
   id: ID!
-  content: String!
+  clientName: String
+  clientRef: String
+  server: String
+  caseNumber: String
+  plantiff: String
+  defendant: String
+  courtDate: AWSTimestamp
+  courtName: String
+  rush: Boolean
+  dueDate: AWSTimestamp
+  serverInstructions: String
+  personServed: String
+  serviceAddress: [ServiceAddress]
+  altAddress: [AltAddress]
+  documents: [Documents]
+  invoice: [Invoice]
+}
+
+type ServiceAddress {
+  fullServiceAddress: String
+    street: String
+    suite: String
+    city: String
+    state: String
+    zip: String
+    lat: String
+    lng: String
+}
+type AltAddress {
+  fullServiceAddress: String
+    street: String
+    suite: String
+    city: String
+    state: String
+    zip: String
+    lat: String
+    lng: String
+}
+type Documents {
+   description: String
+    serviceDocs: [S3Object]
+    otherDocs: [S3Object]
+}
+type Invoice {
+  service: String
+  description: String
+  price: String
+  qty: Int 
+  total: String
+}
+type S3Object {
+  bucket: String!
+  region: String!
+  key: String!
 }
 
 

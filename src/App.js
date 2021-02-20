@@ -2,7 +2,7 @@ import React, { useReducer, useEffect } from "react";
 import Dashboard from "./Components/Dashboard";
 import Nav from "./Components/Nav";
 import Jobs from "./Components/Jobs/Jobs";
-import AddJob from "./Components/Jobs/AddJob";
+import AddJob from "./Components/Jobs/AddJob/AddJob";   
 import Account from "./Components/Account";
 import Reports from "./Components/Reports";
 import { BrowserRouter as Router, Route } from "react-router-dom";

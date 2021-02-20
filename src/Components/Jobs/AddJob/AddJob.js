@@ -1,5 +1,5 @@
 import React, {useEffect } from "react";
-import AddJobForm from "./AddJobForm";
+import AddJobForm from "./AddJobForm"
 
 const AddJob = () => {
   useEffect(() => {

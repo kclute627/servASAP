@@ -32,30 +32,120 @@ export const listTasks = /* GraphQL */ `
     }
   }
 `;
-export const getPrivateNote = /* GraphQL */ `
-  query GetPrivateNote($id: ID!) {
-    getPrivateNote(id: $id) {
+export const getJobs = /* GraphQL */ `
+  query GetJobs($id: ID!) {
+    getJobs(id: $id) {
       id
-      content
+      clientName
+      clientRef
+      server
+      caseNumber
+      plantiff
+      defendant
+      courtDate
+      courtName
+      rush
+      dueDate
+      serverInstructions
+      personServed
+      serviceAddress {
+        fullServiceAddress
+        street
+        suite
+        city
+        state
+        zip
+        lat
+        lng
+      }
+      altAddress {
+        fullServiceAddress
+        street
+        suite
+        city
+        state
+        zip
+        lat
+        lng
+      }
+      documents {
+        description
+        serviceDocs {
+          bucket
+          region
+          key
+        }
+        otherDocs {
+          bucket
+          region
+          key
+        }
+      }
+      invoice {
+        service
+        description
+        price
+        qty
+        total
+      }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
-export const listPrivateNotes = /* GraphQL */ `
-  query ListPrivateNotes(
-    $filter: ModelPrivateNoteFilterInput
+export const listJobs = /* GraphQL */ `
+  query ListJobss(
+    $filter: ModelJobsFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listPrivateNotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listJobss(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        content
+        clientName
+        clientRef
+        server
+        caseNumber
+        plantiff
+        defendant
+        courtDate
+        courtName
+        rush
+        dueDate
+        serverInstructions
+        personServed
+        serviceAddress {
+          fullServiceAddress
+          street
+          suite
+          city
+          state
+          zip
+          lat
+          lng
+        }
+        altAddress {
+          fullServiceAddress
+          street
+          suite
+          city
+          state
+          zip
+          lat
+          lng
+        }
+        documents {
+          description
+        }
+        invoice {
+          service
+          description
+          price
+          qty
+          total
+        }
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }
