@@ -36,6 +36,8 @@ export const getJobs = /* GraphQL */ `
   query GetJobs($id: ID!) {
     getJobs(id: $id) {
       id
+      status
+      jobNumber
       clientName
       clientRef
       server
@@ -90,10 +92,11 @@ export const getJobs = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
-export const listJobs = /* GraphQL */ `
+export const listJobss = /* GraphQL */ `
   query ListJobss(
     $filter: ModelJobsFilterInput
     $limit: Int
@@ -102,6 +105,8 @@ export const listJobs = /* GraphQL */ `
     listJobss(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        status
+        jobNumber
         clientName
         clientRef
         server
@@ -146,6 +151,7 @@ export const listJobs = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        owner
       }
       nextToken
     }

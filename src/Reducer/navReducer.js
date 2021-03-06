@@ -4,7 +4,7 @@ export const initialState = {
     currentPage: "dashboard",
   };
   
-  export const reducer = (state = initialState, action) => {
+  export const nav = (state = initialState, action) => {
     switch (action.type) {
       case "dashboard":
         return { ...state, currentPage: "dashboard" };

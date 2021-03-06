@@ -1,5 +1,6 @@
 import React, { useState} from "react";
 import SVG from "react-inlinesvg";
+import {AmplifySignOut} from '@aws-amplify/ui-react'
 import { Link } from "react-router-dom";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
@@ -7,12 +8,14 @@ import IconButton from "@material-ui/core/IconButton";
 import { grey } from "@material-ui/core/colors";
 import Avatar from "@material-ui/core/Avatar";
 import logo from "../Assets/logo-white.png";
+import {useDispatch} from 'react-redux'
 
 import { navList } from "../Utils/utils";
 
-const Nav = ({ dispatch }) => {
+const Nav = () => {
   const [open, openHandler] = useState(true);
 
+  const dispatch = useDispatch() 
   return (
     <div className={!open ? "nav__drawer open" : "nav__drawer"}>
       <div className='nav__drawer-top'>
@@ -28,7 +31,7 @@ const Nav = ({ dispatch }) => {
       </div>
       <div className={open ? "nav__drawer-middle" : "nav__drawer-middle mg"}>
         {navList.map((link, i ) => (
-          <Link to={link.link} key={i}>
+          <Link to={link.link} key={i}>  
             <li
               className='nav__drawer-items'
               onClick={() => dispatch({ type: `${link.type}` })}
@@ -43,9 +46,11 @@ const Nav = ({ dispatch }) => {
               ) : null}
             </li>{" "}
           </Link>
+          
         ))}
       </div>
       <div className='nav__drawer-bottom'>
+        <AmplifySignOut/>
         <div className='icon'>
           <IconButton onClick={() => openHandler(!open)}>
             {open ? (

@@ -41,5 +41,23 @@ body{
 .MuiPickersSlideTransition-transitionContainer > * {
   top: -4px !important;}
   
-  
+  /* unvisited link */
+a:link {
+  color: black;
+}
+
+/* visited link */
+a:visited {
+  color: black;
+}
+
+/* mouse over link */
+a:hover {
+  color:black;
+}
+
+/* selected link */
+a:active {
+  color:black;
+}
   

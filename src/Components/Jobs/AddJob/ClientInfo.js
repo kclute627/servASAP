@@ -14,6 +14,7 @@ const ClientInfo = ({setFormData, formData, handleChange}) => {
           name='clientName'  
           onChange={handleChange}
           variant='outlined'
+          value={formData.clientName}
           style={{ width: "100%" }}
         />
       </div>
@@ -26,6 +27,7 @@ const ClientInfo = ({setFormData, formData, handleChange}) => {
           style={{ width: "100%" }}
           name='clientRef'
           onChange={handleChange}
+          value={formData.clientRef}
         />
       </div>
     </>

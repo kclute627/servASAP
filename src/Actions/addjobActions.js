@@ -1,23 +1,32 @@
+import { createJobs } from "../../../graphql/mutations";
+
+import { API, graphqlOperation } from "aws-amplify";
+
 import {
-  ADD_JOB_FORM_DATA,
-  ADD_JOB_FORM_SERVICE_DOCUMENTS_DESCRIPTION,
-  ADD_JOB_FORM_CASENUMBER,
-  ADD_JOB_FORM_CLIENTNAME,
+  ADD_JOB_FAIL,
+  ADD_JOB_REQUEST,
+  ADD_JOB_SUCCESS,
 } from "../constants/addJobConstants";
 
+export const setFormData = (data) => async (dispatch) => {
+  try {
+    const results = await API.graphql(
+      graphqlOperation(createJobs, { input: data })
+    );
+    console.log("Created Job", results);
 
-export const setFormData= (info, TYPE) => async(dispatch) => {
+    dispatch({
+      type: ADD_JOB_SUCCESS,
+      payload: data, 
+    });
 
-    try {
-        dispatch({
-            type: TYPE,
-            payload: info,
-        })
-        
-    } catch (error) {
-        /// DISPATCH ERROR 
-    }
+    history.push("/jobs");
+  } catch (error) {
+    /// DISPATCH ERROR
 
-
-
-}
+    dispatch({
+      type: ADD_JOB_FAIL,
+      payload: data,
+    });
+  }
+};

@@ -221,3 +221,39 @@
 
 
 
+
+.checked{
+  background: rgba(75, 157, 224, 0.377);
+
+  &:hover{
+    background-color: darken($color:  rgba(75, 157, 224, 0.377), $amount: 15%);
+  }
+}
+
+.jobs{
+
+  &-table{
+    font-size: 21rem;
+    font-weight: 700;
+  }
+}
+.row{
+  background:rgb(228, 228, 228);
+ 
+
+  &:hover{
+    background: darken(rgb(228, 228, 228), 13%)
+  }
+
+  &-1{
+    background:rgb(255, 255, 255);
+
+
+    &:hover{
+      background: darken(rgb(228, 228, 228), 13%)
+    }
+  
+  }
+}
+
+

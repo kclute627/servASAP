@@ -64,7 +64,7 @@ NumberFormatCustom.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-const InvoiceSection = ({ setFormData, formData, initialState }) => {
+const InvoiceSection = ({ setFormData, formData, initialState, history }) => {
   const [service, setService] = useState("Service of Process");
   const [value, setValue] = useState("");
   const [jobDescription, setJobDescription] = useState("");
@@ -263,6 +263,7 @@ const InvoiceSection = ({ setFormData, formData, initialState }) => {
       setFormData= {setFormData} 
       formData = {formData}
       initialState = {initialState}
+      history={history}
       />
     </div>
   );

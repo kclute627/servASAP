@@ -41,6 +41,8 @@ export const onCreateJobs = /* GraphQL */ `
   subscription OnCreateJobs {
     onCreateJobs {
       id
+      status
+      jobNumber
       clientName
       clientRef
       server
@@ -95,6 +97,7 @@ export const onCreateJobs = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -102,6 +105,8 @@ export const onUpdateJobs = /* GraphQL */ `
   subscription OnUpdateJobs {
     onUpdateJobs {
       id
+      status
+      jobNumber
       clientName
       clientRef
       server
@@ -156,6 +161,7 @@ export const onUpdateJobs = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -163,6 +169,8 @@ export const onDeleteJobs = /* GraphQL */ `
   subscription OnDeleteJobs {
     onDeleteJobs {
       id
+      status
+      jobNumber
       clientName
       clientRef
       server
@@ -217,6 +225,7 @@ export const onDeleteJobs = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;

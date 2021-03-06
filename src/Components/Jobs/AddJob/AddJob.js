@@ -1,7 +1,7 @@
 import React, {useEffect } from "react";
 import AddJobForm from "./AddJobForm"
 
-const AddJob = () => {
+const AddJob = ({history}) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -11,7 +11,7 @@ const AddJob = () => {
         <h1>ADD A JOB</h1>
       </div>
 
-      <AddJobForm />
+      <AddJobForm history={history} />
     </div>
   );
 };

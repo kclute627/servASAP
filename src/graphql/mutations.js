@@ -1,13 +1,60 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createTask = /* GraphQL */ `
+  mutation CreateTask(
+    $input: CreateTaskInput!
+    $condition: ModelTaskConditionInput
+  ) {
+    createTask(input: $input, condition: $condition) {
+      id
+      title
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateTask = /* GraphQL */ `
+  mutation UpdateTask(
+    $input: UpdateTaskInput!
+    $condition: ModelTaskConditionInput
+  ) {
+    updateTask(input: $input, condition: $condition) {
+      id
+      title
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteTask = /* GraphQL */ `
+  mutation DeleteTask(
+    $input: DeleteTaskInput!
+    $condition: ModelTaskConditionInput
+  ) {
+    deleteTask(input: $input, condition: $condition) {
+      id
+      title
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createJobs = /* GraphQL */ `
   mutation CreateJobs(
     $input: CreateJobsInput!
-      : ModelJobsConditionInput
+    $condition: ModelJobsConditionInput
   ) {
     createJobs(input: $input, condition: $condition) {
       id
+      status
+      jobNumber
       clientName
       clientRef
       server
@@ -62,6 +109,7 @@ export const createJobs = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -72,6 +120,8 @@ export const updateJobs = /* GraphQL */ `
   ) {
     updateJobs(input: $input, condition: $condition) {
       id
+      status
+      jobNumber
       clientName
       clientRef
       server
@@ -126,6 +176,7 @@ export const updateJobs = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -136,6 +187,8 @@ export const deleteJobs = /* GraphQL */ `
   ) {
     deleteJobs(input: $input, condition: $condition) {
       id
+      status
+      jobNumber
       clientName
       clientRef
       server
@@ -190,6 +243,7 @@ export const deleteJobs = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      owner
     }
   }
 `;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "date-fns";
 import TextField from "@material-ui/core/TextField";
 import FileDropForm from "./FileDropForm";
@@ -7,9 +7,13 @@ import CaseInfo from "./CaseInfo";
 import ClientInfo from "./ClientInfo";
 import ServerInfo from "./ServerInfo";
 import PlacesAutocompleteComponent from "./PlacesAutocomplete";
+import { API, graphqlOperation } from "aws-amplify";
+import { listJobss } from "../../../graphql/queries";
 
 const initialState = {
-  clientName: "",
+  jobNumber: 0,
+  status: ['Out For Service'],
+  clientName: '',  
   clientRef: "",
   server: "",
   caseNumber: "",
@@ -20,7 +24,7 @@ const initialState = {
   rush: false,
   dueDate: new Date(),
   serverInstructions: "",
-  personBeingServed: "",
+  personServed: "",
   serviceAddress: {
     fullServiceAddress: "",
     street: "",
@@ -49,9 +53,27 @@ const initialState = {
   invoice: [],
 };
 
-const AddJobForm = (props) => {
-  const [formData, setFormData] = useState(initialState);
+const AddJobForm = ({history}) => {
 
+  useEffect(()=> {
+    setJobNumber()
+  }, [])
+ 
+  const [formData, setFormData] = useState(initialState);
+  const setJobNumber = async() => {
+    try {
+       const result = await API.graphql(graphqlOperation(listJobss))
+
+       setFormData({...formData, jobNumber: result.data.listJobss.items.length})
+
+
+    } catch (error) {
+     const jobNumber = Math.random() * 100000
+      setFormData({...formData, jobNumber: Math.floor(jobNumber)})
+
+    }
+   
+  }
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
@@ -77,10 +99,10 @@ const AddJobForm = (props) => {
           <TextField
             id='outlined-basic'
             label='Name'
-            variant='outlined'
+            variant='outlined' 
             autoComplete='new-password'
             style={{ width: "100%" }}
-            name='personBeingServed'
+            name='personServed' 
             onChange={handleChange}
           />
         </div>
@@ -101,6 +123,8 @@ const AddJobForm = (props) => {
          formData={formData}
          handleChange={handleChange}
          initialState= {initialState}
+         history={history}
+
       />
     </>
   );
